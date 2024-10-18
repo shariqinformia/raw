@@ -21,26 +21,13 @@ class CreateUsersTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-
             $table->string('password');
             $table->enum('gender', ['male', 'female']);
-            $table->string('birth_place')->nullable();
-            $table->string('birth_date')->nullable();
             $table->string('address')->nullable();
             $table->string('phone_number')->nullable();
-
             $table->string('company')->nullable();
             $table->string('website')->nullable();
             $table->string('telephone')->nullable();
-
-
-
-
-//            $table->text('GeneralEnrolment')->nullable();
-//            $table->text('CourseWork')->nullable();
-//            $table->text('Reminders')->nullable();
-//            $table->text('PostCompletion')->nullable();
-
             $table->string('image')->nullable();
             $table->integer('password_check')->default(0);
             $table->rememberToken();

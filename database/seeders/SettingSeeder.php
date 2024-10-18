@@ -17,15 +17,14 @@ class SettingSeeder extends Seeder
     {
         DB::table('settings')->truncate();
         Setting::create([
-            'name' => 'Training4employment',
+            'name' => 'E-MARKET',
             'logo' => 'logo/default.png',
-            'email' => 'info@training4employment.co.uk',
-            'phone_number' => '0121 630 2115',
-            'address' => 'Head Office: 89-91 Hatchett Street, Birmingham, West Midlands, B19 3NY',
+            'email' => 'info@emarket.com',
+            'phone_number' => '1111 111 1111',
+            'address' => '',
             'facebook' => 'https://facebook.com',
             'youtube' => 'https://youtube.com',
             'instagram' => 'https://instagram.com',
-            // 'twitter ' => 'https://twitter.com'
         ]);
     }
 }

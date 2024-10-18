@@ -95,7 +95,7 @@
         <div class="loginPageInner">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5 col-lg-5 col-12 bg-white">
+                    <div class="col-md-5 col-lg-5 col-12 bg-white ">
                         <div class="login-box">
                             <div class="loginText">
                                 {{ __('Login') }}
@@ -149,10 +149,10 @@
 {{--                            @endif--}}
                         </div>
                     </div>
-                    <div class="col-md-7 col-lg-7 col-12 loginBg"
-                        style="background:url({{ asset('/images/loginBgImg.png') }}) no-repeat center center/cover">
-                        <img src="{{ asset('/images/loginBgImg.png') }}" class="img-fluid loginBgImg" alt="">
-                    </div>
+{{--                    <div class="col-md-7 col-lg-7 col-12 loginBg"--}}
+{{--                        style="background:url({{ asset('/images/loginBgImg.png') }}) no-repeat center center/cover">--}}
+{{--                        <img src="{{ asset('/images/loginBgImg.png') }}" class="img-fluid loginBgImg" alt="">--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>

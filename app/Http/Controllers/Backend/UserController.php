@@ -374,7 +374,7 @@ class UserController extends Controller
             if (isset($cohortIds)) {
 
 
-                TaskSubmission::where('user_id', $user->id)->delete();
+                //TaskSubmission::where('user_id', $user->id)->delete();
 
                 foreach ($cohortIds as $cohort_id) {
                     $cohort = Cohort::find($cohort_id);

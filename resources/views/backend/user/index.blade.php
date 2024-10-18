@@ -50,7 +50,7 @@
                               class="d-flex  align-items-center">
                             <div class="input-group input-group-sm mb-3" style="width: 300px;">
                                 <input type="text" name="search" class="form-control" placeholder="Search users..."
-                                       value="{{ request()->get('search') }}" style="height: calc(2.25rem + 2px);">
+                                       value="{{ request('search') }}" style="height: calc(2.25rem + 2px);">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-default">
                                         <i class="fas fa-search"></i>
@@ -153,12 +153,11 @@
                                         @endcan
                                     </td>
 
-                                    @if($loggedUser->hasRole('Super Admin'))
+                                    @canBeImpersonated($user, $guard = null)
                                         <td>
-                                            <a class="btn btn-success btn-sm"
-                                               href="{{ route('impersonate', $user->id) }}">Impersonate</a>
+                                            <a class="btn btn-success btn-sm" href="{{ route('impersonate', $user->id) }}">Log in as {{ $user->name }}</a>
                                         </td>
-                                    @endif
+                                    @endCanBeImpersonated
 
 
                                 </tr>
@@ -169,11 +168,6 @@
                                 </tr>
                             @endforelse
                             </tbody>
-                            {{--                            <tbody class="searchData"> --}}
-                            {{--                                <div id="loadingSpinner" style="display: none; text-align: center;"> --}}
-                            {{--                                    <i class="fas fa-spinner fa-spin fa-3x"></i> --}}
-                            {{--                                </div> --}}
-                            {{--                            </tbody> --}}
                         </table>
                         <div class="d-flex justify-content-end">
                             {{ $users->appends(request()->except('page'))->links() }}

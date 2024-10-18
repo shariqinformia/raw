@@ -24,288 +24,82 @@
     <div class="content">
         <div class="adminDashboard">
             <div class="row">
-                {{-- @php
-                    $superAdmin = null;
-                    $admin = null;
-                    $trainer = null;
-                    $learner = null;
-                    $client = null;
-                @endphp
-                @foreach ($usersByRoleCount as $role)
-                    @if ($role->name == 'Super Admin')
-                        @php
-                            $superAdmin = $role->users->count();
-                        @endphp
-                    @elseif($role->name == 'Admin')
-                        @php
-                            $admin = $role->users->count();
-                        @endphp
-                    @elseif($role->name == 'Trainer')
-                        @php
-                            $trainer = $role->users->count();
-                        @endphp
-                    @elseif($role->name == 'Learner')
-                        @php
-                            $learner = $role->users->count();
-                        @endphp
-                    @elseif($role->name == 'Corporate Client')
-                        @php
-                            $client = $role->users->count();
-                        @endphp
-                    @endif
-                @endforeach --}}
+
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="infoBoxDashboard mb-3 mb-lg-0 mb-md-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="mb-0">Courses</h4>
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="number">{{$courses_count ?? ""}}</div>
+                        <div class="number"></div>
                         <div class="d-flex align-items-center justify-content-between">
-                            {{--                            <span>{{$courses_count ?? ""}}</span>--}}
-                            <a href="{{route('backend.courses.index')}}">View All</a>
+                            <a href="javascript:0">View All</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="infoBoxDashboard mb-3 mb-lg-0 mb-md-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Learners</h4>
-                            <i class="fas fa-id-card-alt"></i>
+                            <h4 class="mb-0">Courses</h4>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="number">{{$learner_count ?? ""}}</div>
-                        <div class="d-flex align-items-center text-right">
-                            <span></span>
-                            <a href="{{route('backend.users.index')}}?search=&role=Learner&sort=desc">View All Learners</a>
+                        <div class="number"></div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <a href="javascript:0">View All</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="infoBoxDashboard mb-3 mb-lg-0 mb-md-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Trainers</h4>
-                            <i class="fas fa-edit"></i>
+                            <h4 class="mb-0">Courses</h4>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="number">{{$trainer_count ?? ""}}</div>
+                        <div class="number"></div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <span></span>
-                            <a href="{{route('backend.users.index')}}?search=&role=Trainer&sort=desc">Manage Trainers</a>
+                            <a href="javascript:0">View All</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="infoBoxDashboard mb-3 mb-lg-0 mb-md-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Admins</h4>
-                            <i class="fas fa-user-shield"></i>
+                            <h4 class="mb-0">Courses</h4>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="number">{{$admin_count ?? ""}}</div>
+                        <div class="number"></div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <span></span>
-                            <a href="{{route('backend.users.index')}}?search=&role=Admin&sort=desc">Manage Admins</a>
+                            <a href="javascript:0">View All</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="infoBoxDashboard mb-3 mb-lg-0 mb-md-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">My Tasks</h4>
-                            <i class="fas fa-file-signature"></i>
+                            <h4 class="mb-0">Courses</h4>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="number">15 Pending</div>
+                        <div class="number"></div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <span>4 completed</span>
-                            <a href="javascript:;">View All</a>
+                            <a href="javascript:0">View All</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-12">
                     <div class="infoBoxDashboard mb-3 mb-lg-0 mb-md-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">My Messages </h4>
-                            <i class="fas fa-comment-alt"></i>
+                            <h4 class="mb-0">Courses</h4>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="number {{($unreadCount>0) ? 'text-red' : ''}}">{{$unreadCount ?? 0}} Unread</div>
+                        <div class="number"></div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <span>{{$readCount ?? 0}}</span>
-                            <a href="{{route('backend.messages.index')}}">View All</a>
+                            <a href="javascript:0">View All</a>
                         </div>
                     </div>
                 </div>
             </div>
-            {{--            <div class="row">--}}
-            {{--                <div class="col-lg-8 col-md-8 col-12">--}}
-            {{--                    <div class="activeCourse">Active Courses</div>--}}
-            {{--                </div>--}}
-            {{--                <div class="col-lg-4 col-md-4 col-12">--}}
-            {{--                    <div class="deactiveCourse">Active Courses</div>--}}
-            {{--                </div>--}}
-            {{--            </div>--}}
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-12">
-                    <div class="eLarningCourse">
-                        <div class="courseListInfo">
-                            <h4>E-learning Licenses</h4>
-                        </div>
-                        <div
-                            class="eLaerningBoxes d-flex align-items-center flex-column flex-lg-column-reverse flex-md-column-reverse">
-                            <div class="eLaerningBoxeInner">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="boxBorder">
-                                        <span>All Licences</span>
-                                        <span>{{$total_license ?? ""}}</span>
-                                    </div>
-                                    <div class="boxBorder">
-                                        <span>Active</span>
-                                        <span>{{$total_license ?? ""}}</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="boxBorder">
-                                        <span>Available</span>
-                                        <span>{{$total_license ?? ""}}</span>
-                                    </div>
-                                    <div class="boxBorder">
-                                        <span>Available</span>
-                                        <span>{{$total_license ?? ""}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="">
-                                <a href="{{route('backend.elearning_licences.index')}}">View available licences</a>
-                                <a href="{{route('backend.elearning_licences.index')}}">Purchase additional licences</a>
-                                <a href="{{route('backend.elearning_licences.index')}}">Assign a licence to a new or existing user</a>
-                                <a href="{{route('backend.elearning_licences.index')}}">View details of your licences</a>
-                                <a href="{{route('backend.elearning_licences.index')}}">View available e-learning courses</a>
-                                <a href="{{route('backend.elearning_licences.index')}}">View expired licences</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="upcomingCourse">
-                        <div class="courseList">
-                            <div class="courseListInfo d-flex align-items-center justify-content-between">
 
-                                <h4>Upcoming Courses</h4>
-                                <a href="{{route('backend.cohorts.index')}}">View All Courses</a>
-                            </div>
-                            @forelse($cohorts as $cohort)
-                                <div class="courseListInner">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="courseName">{{ getAcronym($cohort->course->name) }}</div>
-                                        <!-- Display acronym -->
-                                        <div class="courseInfo">
-                                            <h4 class="m-0">{{$cohort->course->name ?? ""}}</h4>
-                                            <p class="m-0">
-                                                {{ isset($cohort->start_date_time) ? \Carbon\Carbon::parse($cohort->start_date_time)->format('d F, Y, h:i A') : 'N/A' }}
-                                                - {{ isset($cohort->end_date_time) ? \Carbon\Carbon::parse($cohort->end_date_time)->format('d F, Y, h:i A') : 'N/A' }}
-                                            </p>
-                                        </div>
-                                        <div class="courseDate">
-                                            <p class="m-0">{{ $cohort->users_count }} / {{$cohort->max_learner}}</p>
-                                            <p class="m-0">learners</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="courseListInner">
-                                    No trainers found.
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-12">
-                    <div class="activeTrainer">
-                        <div class="courseList">
-                            <div class="courseListInfo d-flex align-items-center justify-content-between">
-                                <h4>Active Trainers</h4>
-                                <a href="{{route('backend.users.index')}}">View All Trainers</a>
-                            </div>
-                            @forelse($trainers as $trainer)
-                                <div class="courseListInner">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="courseName"><i class="fas fa-user"></i></div>
-                                        <div class="courseInfo">
-                                            <h4 class="m-0">{{$trainer->name}}</h4>
 
-                                            @forelse($trainer->trainerCohorts as $cohort)
-                                                {{$cohort->course->name}}/
-                                            @empty
-                                            @endforelse
-                                        </div>
-                                        <div class="courseDate">
-                                            <p class="m-0">&nbsp; &nbsp; &nbsp;</p>
-                                            <p class="m-0">&nbsp; &nbsp; &nbsp;</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="courseListInner">
-                                    No trainers found.
-                                </div>
-                            @endforelse
-                        </div>
-                        <div class="courseList">
-                            <div class="courseListInfo d-flex align-items-center justify-content-between">
-                                <h4>Recent Corporate Clients</h4>
-                                <a href="{{route('backend.users.index')}}">View All Courses</a>
-                            </div>
-
-                            @forelse($clients as $client)
-                                <div class="courseListInner">
-                                    <div class="d-flex align-items-center"> <!--justify-content-between-->
-                                        <div class="courseName"><i class="fas fa-user"></i></div>
-                                        <div class="courseInfo">
-                                            <h4 class="m-0">{{$client->name??""}}</h4>
-{{--                                            <p class="m-0">Finance</p>--}}
-                                        </div>
-{{--                                        <div class="courseDate">--}}
-{{--                                            <div class="text-right font-weight-bold">1</div>--}}
-{{--                                            <div class="text-right">courses</div>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="courseDate">--}}
-{{--                                            <div class="text-right font-weight-bold">1</div>--}}
-{{--                                            <div class="text-right">courses</div>--}}
-{{--                                        </div>--}}
-                                    </div>
-                                </div>
-                            @empty
-                            @endforelse
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-12">
-                    <div class="notification">
-                        <div class="courseListInfo d-flex align-items-center justify-content-between">
-                            <h4>Notifications</h4>
-                            <a href="{{route('backend.notifications.index')}}">View All Notifications</a>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            @forelse($notifications as $notification)
-                                <li class="list-group-item">
-                                    <div class="notifyInner d-flex align-items-center justify-content-between">
-                                        <div class="infoDetail">
-                                            <p class="m-0"><strong>Title:</strong> {{ $notification->data['message'] }}
-                                            </p>
-                                            <p class="m-0"><strong>Date,
-                                                    Time:</strong> {{ $notification->created_at->diffForHumans() }}</p>
-                                        </div>
-                                        <a href="{{ $notification->data['task_url'] }}" class="btn btn-sm btn-danger">View</a>
-                                    </div>
-                                </li>
-                            @empty
-                                <li class="list-group-item">
-                                    <div class="notifyInner d-flex align-items-center justify-content-between">
-                                        No notifications found.
-                                    </div>
-                                </li>
-                            @endforelse
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

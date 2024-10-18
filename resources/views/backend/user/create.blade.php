@@ -56,69 +56,64 @@
         });
 
 
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const corporate_client_id = document.getElementById('corporate_client_id');
+        //     const userTypeSelect = document.getElementById('user_type');
+        //     const cohortsSection = document.getElementById('cohorts_section');
+        //     const corporateMessage = document.getElementById('corporate_message');
+        //
+        //     function toggleSections() {
+        //         const userType = userTypeSelect.options[userTypeSelect.selectedIndex].text;
+        //         if (userType === 'Corporate Client') {
+        //             corporateMessage.style.display = 'block';
+        //             corporate_client_id.style.display = 'none';
+        //             cohortsSection.style.display = 'none';
+        //         } else if (userType === 'Learner') {
+        //             corporateMessage.style.display = 'none';
+        //             cohortsSection.style.display = 'block';
+        //             corporate_client_id.style.display = 'block';
+        //         } else {
+        //             corporateMessage.style.display = 'none';
+        //             cohortsSection.style.display = 'none';
+        //             corporate_client_id.style.display = 'block';
+        //         }
+        //     }
+        //
+        //     userTypeSelect.addEventListener('change', toggleSections);
+        //     toggleSections(); // Initial check
+        // });
+
         document.addEventListener('DOMContentLoaded', function () {
             const corporate_client_id = document.getElementById('corporate_client_id');
             const userTypeSelect = document.getElementById('user_type');
             const cohortsSection = document.getElementById('cohorts_section');
-            const elearningCoursesSection = document.getElementById('elearning_courses_section');
-            const classroom_based_courses = document.getElementById('classroom_based_courses');
-            const corporateMessage = document.getElementById('corporate_message');
 
-            function toggleSections() {
-                const userType = userTypeSelect.options[userTypeSelect.selectedIndex].text;
-                if (userType === 'Corporate Client') {
-                    corporateMessage.style.display = 'block';
-                    corporate_client_id.style.display = 'none';
-                    cohortsSection.style.display = 'none';
-                    elearningCoursesSection.style.display = 'none';
-                    classroom_based_courses.style.display = 'none';
-                } else if (userType === 'Learner') {
-                    corporateMessage.style.display = 'none';
-                    cohortsSection.style.display = 'block';
-                    elearningCoursesSection.style.display = 'block';
-                    corporate_client_id.style.display = 'block';
-                    classroom_based_courses.style.display = 'block';
-                } else {
-                    corporateMessage.style.display = 'none';
-                    cohortsSection.style.display = 'none';
-                    elearningCoursesSection.style.display = 'none';
-                    corporate_client_id.style.display = 'block';
-                    classroom_based_courses.style.display = 'block';
-                }
-            }
-
-            userTypeSelect.addEventListener('change', toggleSections);
-            toggleSections(); // Initial check
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const userTypeSelect = document.getElementById('user_type');
-            const cohortsSection = document.getElementById('cohorts_section');
-            const elearningCoursesSection = document.getElementById('elearning_courses_section');
             const corporateMessage = document.getElementById('corporate_message');
             const categorySelect = document.getElementById('category_id');
             const courseSelect = document.getElementById('course_id');
             const dateSelect = document.getElementById('filter_date');
             const cohortsTable = document.getElementById('cohorts_table');
-            const classroom_based_courses = document.getElementById('classroom_based_courses');
+
+
+            corporate_client_id.style.display = 'none';
 
             function toggleSections() {
                 const userType = userTypeSelect.options[userTypeSelect.selectedIndex].text;
                 if (userType === 'Corporate Client') {
                     corporateMessage.style.display = 'block';
                     cohortsSection.style.display = 'none';
-                    elearningCoursesSection.style.display = 'none';
-                    classroom_based_courses.style.display = 'none';
+                    corporate_client_id.style.display = 'none';
+
                 } else if (userType === 'Learner') {
-                    corporateMessage.style.display = 'none';
+                    corporate_client_id.style.display = 'block';
+                    corporateMessage.style.display = 'block';
                     cohortsSection.style.display = 'block';
-                    elearningCoursesSection.style.display = 'block';
-                    classroom_based_courses.style.display = 'block';
+
                 } else {
+                    corporate_client_id.style.display = 'none';
                     corporateMessage.style.display = 'none';
                     cohortsSection.style.display = 'none';
-                    elearningCoursesSection.style.display = 'none';
-                    classroom_based_courses.style.display = 'none';
+
                 }
             }
 

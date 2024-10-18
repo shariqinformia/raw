@@ -100,3 +100,122 @@
 
 @endsection
 
+@push('js')
+    <script>
+        document.getElementById('select_all').addEventListener('change', function(e){
+            let checkboxes = document.querySelectorAll('input[type="checkbox"][name="cohort_ids[]"]');
+            checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
+        });
+
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const corporate_client_id = document.getElementById('corporate_client_id');
+        //     const userTypeSelect = document.getElementById('user_type');
+        //     const cohortsSection = document.getElementById('cohorts_section');
+        //     const corporateMessage = document.getElementById('corporate_message');
+        //
+        //     function toggleSections() {
+        //         const userType = userTypeSelect.options[userTypeSelect.selectedIndex].text;
+        //         if (userType === 'Corporate Client') {
+        //             corporateMessage.style.display = 'block';
+        //             corporate_client_id.style.display = 'none';
+        //             cohortsSection.style.display = 'none';
+        //         } else if (userType === 'Learner') {
+        //             corporateMessage.style.display = 'none';
+        //             cohortsSection.style.display = 'block';
+        //             corporate_client_id.style.display = 'block';
+        //         } else {
+        //             corporateMessage.style.display = 'none';
+        //             cohortsSection.style.display = 'none';
+        //             corporate_client_id.style.display = 'block';
+        //         }
+        //     }
+        //
+        //     userTypeSelect.addEventListener('change', toggleSections);
+        //     toggleSections(); // Initial check
+        // });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const corporate_client_id = document.getElementById('corporate_client_id');
+            const userTypeSelect = document.getElementById('user_type');
+            const cohortsSection = document.getElementById('cohorts_section');
+
+            const corporateMessage = document.getElementById('corporate_message');
+            const categorySelect = document.getElementById('category_id');
+            const courseSelect = document.getElementById('course_id');
+            const dateSelect = document.getElementById('filter_date');
+            const cohortsTable = document.getElementById('cohorts_table');
+
+
+            corporate_client_id.style.display = 'none';
+
+            function toggleSections() {
+                const userType = userTypeSelect.options[userTypeSelect.selectedIndex].text;
+                if (userType === 'Corporate Client') {
+                    corporateMessage.style.display = 'block';
+                    cohortsSection.style.display = 'none';
+                    corporate_client_id.style.display = 'none';
+
+                } else if (userType === 'Learner') {
+                    corporate_client_id.style.display = 'block';
+                    corporateMessage.style.display = 'block';
+                    cohortsSection.style.display = 'block';
+
+                } else {
+                    corporate_client_id.style.display = 'none';
+                    corporateMessage.style.display = 'none';
+                    cohortsSection.style.display = 'none';
+
+                }
+            }
+
+            function filterCohorts(page = 1) {
+                const category_id = categorySelect.value;
+                const course_id = courseSelect.value;
+                const filter_date = dateSelect.value;
+
+                $.ajax({
+                    url: '{{ route('backend.users.filterCohorts') }}',
+                    method: 'GET',
+                    data: {
+                        category_id: category_id,
+                        course_id: course_id,
+                        filter_date: filter_date,
+                        page: page
+                    },
+                    success: function (response) {
+                        cohortsTable.innerHTML = response.cohorts;
+                        attachPaginationEvents(); // Re-attach events for pagination links
+                    },
+                    error: function (error) {
+                        console.error('Error fetching filtered cohorts:', error);
+                    }
+                });
+            }
+
+            function attachPaginationEvents() {
+                const paginationLinks = document.querySelectorAll('.pagination-links a');
+                paginationLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const url = new URL(this.href);
+                        const page = url.searchParams.get('page');
+                        filterCohorts(page);
+                    });
+                });
+            }
+
+            userTypeSelect.addEventListener('change', toggleSections);
+            categorySelect.addEventListener('change', () => filterCohorts());
+            courseSelect.addEventListener('change', () => filterCohorts());
+            dateSelect.addEventListener('change', () => filterCohorts());
+
+            toggleSections(); // Initial check
+            attachPaginationEvents(); // Initial attach for existing pagination links
+        });
+
+
+    </script>
+
+
+@endpush

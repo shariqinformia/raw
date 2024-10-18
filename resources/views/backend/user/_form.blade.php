@@ -30,12 +30,12 @@
             </div>
             <div class="form-group col-md-4">
                 <label for="user_type">{{ __('Profile Image') }} <span
-                    class="text-red">*</span></label>
-                    <div class='file-input'>
-                        <input type='file' name="image">
-                        <span class='button'>Choose</span>
-                        <span class='label' data-js-label>No file selected</label>
-                    </div>
+                        class="text-red">*</span></label>
+                <div class='file-input'>
+                    <input type='file' name="image">
+                    <span class='button'>Choose</span>
+                    <span class='label' data-js-label>No file selected</label>
+                </div>
             </div>
 
         </div>
@@ -134,25 +134,26 @@
             </div>
         </div>
 
+        {{--@if($user->hasRole('Learner'))--}}
+            <div id="corporate_client_id" class="row">
 
-        <div id="corporate_client_id" class="row">
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>{{ __('Corporate Client') }}</label>
-                    <select class="form-control" name="corporate_client_id">
-                        <option value="" disabled selected>Select Corporate Client</option>
-                        @foreach($clients as $client)
-                            <option
-                                value="{{ $client->id }}" {{ old('corporate_client_id') == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('corporate_client_id')
-                    <small class="text-danger">{{ $message }}</small>
-                    @enderror
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>{{ __('Corporate Client') }}</label>
+                        <select class="form-control" name="corporate_client_id">
+                            <option value="" disabled selected>Select Corporate Client</option>
+                            @foreach($clients as $client)
+                                <option
+                                    value="{{ $client->id }}" {{ $client->id == $user->client_id ? 'selected' : '' }}>{{ $client->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('corporate_client_id')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
             </div>
-        </div>
+        {{--@endif--}}
 
     </div>
 </div>
@@ -224,7 +225,6 @@
 </div>
 
 
-
 <!-- E-learning Courses -->
 {{--<div id="elearning_courses_section" class="card" style="display: none;">--}}
 {{--    <div class="card-header bg-secondary text-white">Assign E-learning Course(s)</div>--}}
@@ -259,47 +259,47 @@
 @push('css')
     <style>
         .file-input {
-        display: inline-block;
-        text-align: left;
-        background:#e5e5e5;
-        width:100%;
-        position: relative;
-        border-radius: 3px;
+            display: inline-block;
+            text-align: left;
+            background: #e5e5e5;
+            width: 100%;
+            position: relative;
+            border-radius: 3px;
         }
 
         .file-input > [type='file'] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        z-index: 10;
-        cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 10;
+            cursor: pointer;
         }
 
         .file-input > .button {
-        display: inline-block;
-        cursor: pointer;
-        background: #eee;
-        padding: 8px 16px;
-        border-radius: 2px;
-        margin-right: 8px;
+            display: inline-block;
+            cursor: pointer;
+            background: #eee;
+            padding: 8px 16px;
+            border-radius: 2px;
+            margin-right: 8px;
         }
 
         .file-input:hover > .button {
-        background: dodgerblue;
-        color: white;
+            background: dodgerblue;
+            color: white;
         }
 
         .file-input > .label {
-        color: #333;
-        white-space: nowrap;
-        opacity: .3;
+            color: #333;
+            white-space: nowrap;
+            opacity: .3;
         }
 
         .file-input.-chosen > .label {
-        opacity: 1;
+            opacity: 1;
         }
     </style>
 @endpush
@@ -312,27 +312,28 @@
         $(document).ready(function () {
 
 
-            function inputFile(){
+            function inputFile() {
                 let inputs = document.querySelectorAll('.file-input')
 
                 for (let i = 0, len = inputs.length; i < len; i++) {
-                customInput(inputs[i])
+                    customInput(inputs[i])
                 }
 
-                function customInput (el) {
+                function customInput(el) {
                     const fileInput = el.querySelector('[type="file"]')
                     const label = el.querySelector('[data-js-label]')
 
                     fileInput.onchange =
-                    fileInput.onmouseout = function () {
-                        if (!fileInput.value) return
+                        fileInput.onmouseout = function () {
+                            if (!fileInput.value) return
 
-                        let value = fileInput.value.replace(/^.*[\\\/]/, '')
-                        el.className += ' -chosen'
-                        label.innerText = value
-                    }
+                            let value = fileInput.value.replace(/^.*[\\\/]/, '')
+                            el.className += ' -chosen'
+                            label.innerText = value
+                        }
                 }
             }
+
             inputFile();
 
             $('#phone').mask('+44 00 0000 0000');
