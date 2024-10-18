@@ -151,67 +151,6 @@
 
 
     <script>
-        // resources/js/app.js or a separate JavaScript file
-        function fetchNotifications() {
-            $.ajax({
-                url: '{{ route('backend.notifications.fetch') }}',
-                method: 'GET',
-                success: function(data) {
-                    var notificationCount = data.length;
-                    $('.navbar-badge').text(notificationCount);
-
-                    var notificationList = '';
-                    data.forEach(function(notification) {
-                        // var formattedDate = new Date(notification.created_at);
-                        var formattedDate = new Date(notification.created_at).toLocaleString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true
-                        });
-                        notificationList += `
-                    <div class="notificationWrapper">
-                        <a href="${notification.data.task_url}" class="dropdown-item" onclick="markAsRead('${notification.id}')">
-                            <span><i class="fas fa-file mr-2"></i> ${notification.data.message}</span>
-                            <span class="float-right text-muted text-sm">${formattedDate}</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                    </div>
-                `;
-                    });
-
-                    $('.dropdown-menu').html(`
-                <span class="dropdown-item dropdown-header">${notificationCount} Notifications</span>
-                <div class="dropdown-divider"></div>
-                ${notificationList}
-                <a href="{{ route('backend.notifications.index') }}" class="dropdown-item dropdown-footer">See All Notifications</a>
-            `);
-                }
-            });
-        }
-
-        function markAsRead(id) {
-            $.ajax({
-                url: '{{ route('backend.notifications.markAsRead') }}',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    id: id
-                },
-                success: function() {
-                    fetchNotifications();
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            fetchNotifications(); // Initial fetch
-
-            // Fetch notifications every 15 seconds
-            setInterval(fetchNotifications, 15000);
-        });
     </script>
 
     @stack('js')
