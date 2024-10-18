@@ -11,9 +11,9 @@ use Lab404\Impersonate\Models\Impersonate;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes, \OwenIt\Auditing\Auditable, Impersonate;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes,Impersonate;
 
     /**
      * The attributes that are mass assignable.

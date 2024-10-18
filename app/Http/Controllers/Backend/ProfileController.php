@@ -45,17 +45,28 @@ class ProfileController extends Controller
     public function updateImage(Request $request)
     {
         $profile = User::findOrFail(auth()->user()->id);
-        if ($request->file('image') == "") {
-            return back()->with('error', 'Gagal mengubah gambar');
-        } else {
-            $image = $request->file('image')->store('profile_images', 'public');
-            if (Storage::disk('public')->exists($profile->image)) {
-                Storage::disk('public')->delete($profile->image);
-            }
+
+        $imageName = $profile->image; // Set the default to the current image in the database
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Correct reference to 'image' field
+            $uploadedFile = $request->file('image');
+
+            // Create a unique file name
+            $fileName = time() . '_' . $uploadedFile->getClientOriginalName();
+
+            // Store the file in the 'public' disk under 'profile_images' directory
+            $filePath = $uploadedFile->storeAs('profile_images', $fileName, 'public');
+
+            // Save the full path to store in the database
+            $imageName = 'storage/' . $filePath;
+
             $profile->update([
-                'image' => $image
+                'image' => $imageName
             ]);
             return back()->with('success', 'Updated successfully');
+        } else {
+            return back()->with('error', 'Failed to change image');
         }
+
     }
 }

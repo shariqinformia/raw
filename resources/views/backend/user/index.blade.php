@@ -57,23 +57,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="filterByRole ml-5 d-flex align-items-center">
-                                <div class="form-group">
-                                    <select name="role" class="form-control" style="width:300px;">
-                                        <option value="">All Roles</option>
-                                        @foreach ($roles as $roleName)
-                                            <option value="{{ $roleName }}"
-                                                {{ request()->get('role') == $roleName ? 'selected' : '' }}>
-                                                {{ ucfirst($roleName) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
 
-                                <!-- Sorting control (optional) -->
-                                <input type="hidden" name="sort" value="{{ $sort }}">
-                                <button type="submit" class="btn btn-primary form-group ml-2">Filter</button>
-                            </div>
                         </form>
                         @can('add user')
                             <div class="text-right mb-3">
@@ -153,11 +137,6 @@
                                         @endcan
                                     </td>
 
-                                    @canBeImpersonated($user, $guard = null)
-                                        <td>
-                                            <a class="btn btn-success btn-sm" href="{{ route('impersonate', $user->id) }}">Log in as {{ $user->name }}</a>
-                                        </td>
-                                    @endCanBeImpersonated
 
 
                                 </tr>

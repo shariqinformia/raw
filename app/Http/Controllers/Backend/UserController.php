@@ -91,75 +91,14 @@ class UserController extends Controller
     {
         $user = new User();
         $roles = Role::all();
-        $categories = Category::all();
-        $courses = Course::all();
-
-        //        $coursesGeneralEnrolment = Task::where('type', 'GeneralEnrolment')->get();
-        //        $coursesCourseWork = Task::where('type', 'CourseWork')->get();
-        //        $coursesReminders = Task::where('type', 'Reminders')->get();
-        //        $coursesPostCompletion = Task::where('type', 'PostCompletion')->get();
-
         $sortField = $request->get('sortField', 'start_date_time');
         $sortOrder = $request->get('sortOrder', 'desc');
-        $cohorts = Cohort::with('course', 'corporateClient', 'trainer')
-            ->orderBy($sortField, $sortOrder)
-            ->paginate(10);
-
-        //$cohorts = Cohort::with('course', 'corporateClient', 'trainer')->paginate(10);
-        $clients = User::role('Corporate Client')->get();
         $selectedCourses = [];
         $assignedTasks = [];
 
-        $cohortDates = DB::table('cohorts')
-            ->select(DB::raw('YEAR(start_date_time) as year'), DB::raw('MONTH(start_date_time) as month'))
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
-
-        // Check if the request is AJAX
-        if ($request->ajax()) {
-            return view('backend.user.partials.cohorts_table', compact('cohorts', 'user', 'selectedCourses'));
-        }
-
-
-        return view('backend.user.create', compact('cohortDates', 'user', 'roles', 'categories', 'courses', 'cohorts', 'clients', 'selectedCourses', 'sortField', 'sortOrder', 'assignedTasks'));
+        return view('backend.user.create', compact( 'user', 'roles',  'sortField', 'sortOrder', 'assignedTasks'));
     }
 
-    public function filterCohorts(Request $request)
-    {
-        $categoryId = $request->input('category_id');
-        $courseId = $request->input('course_id');
-        $filterDate = $request->input('filter_date');
-
-        // Query the cohorts based on filters
-        $query = Cohort::with('course', 'corporateClient', 'trainer');
-
-        if ($categoryId) {
-            $query->whereHas('course.category', function ($q) use ($categoryId) {
-                $q->where('id', $categoryId);
-            });
-        }
-
-        if ($courseId) {
-            $query->where('course_id', $courseId);
-        }
-
-        if ($filterDate) {
-            $dateParts = explode('-', $filterDate);
-            $year = $dateParts[0];
-            $month = $dateParts[1];
-            $query->whereYear('start_date_time', $year)
-                ->whereMonth('start_date_time', $month);
-        }
-
-        $cohorts = $query->paginate(10);
-
-        // Return the partial view with updated cohorts
-        return response()->json([
-            'cohorts' => view('backend.user.partials.cohorts_table', compact('cohorts'))->render()
-        ]);
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -180,12 +119,9 @@ class UserController extends Controller
                 'last_name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'telephone' => 'required',
-                'birth_date' => 'nullable|date',
                 'address' => 'nullable|string|max:255',
                 'company' => 'nullable|string|max:255',
                 'website' => 'nullable|string|max:255',
-                'cohort_ids' => 'array',
-                'cohort_ids.*' => 'exists:cohorts,id'
             ]);
 
             $imageName = null;
@@ -216,62 +152,6 @@ class UserController extends Controller
 
             $user = User::create($validatedData);
             $user->assignRole($request->user_type);
-            // If the user is a learner
-            if ($request->user_type == 4) {
-
-                // Sync cohorts
-                $cohortIds = $request->input('cohort_ids', []);
-                $user->cohorts()->sync($cohortIds);
-
-                if (isset($cohortIds)) {
-                    foreach ($cohortIds as $cohort_id) {
-                        $cohort = Cohort::find($cohort_id);
-
-                        foreach ($cohort->course->licenses as $license) {
-
-                            $courseId = $license->course_id;
-                            $course_id = $cohort->course->id;
-                            $learner_id = $validatedData['name'];
-                            $learnerEmail = $validatedData['email'];
-                            $learnerFirstName = $validatedData['name'];
-                            $learnerLastName = $validatedData['last_name'];
-                            $registration_id = 'reg_' . $courseId . '_' . uniqid();
-                            // Usage Example
-                            $scormApiService = new ScormApiService();
-                            $registrationId = $registration_id;
-                            $learner = [
-                                'id' => $learner_id,
-                                'email' => $learnerEmail,
-                                'firstName' => $learnerFirstName,
-                                'lastName' => $learnerLastName ?? "",
-                            ];
-
-                            // Create the registration
-                            //dd($registrationId,$learner,$courseId);
-                            $registrationResponse = $scormApiService->createRegistration($registrationId, $learner, $courseId);
-
-                            // Generate the launch link
-                            $launchLinkResponse = $scormApiService->generateLaunchLink($registrationId, 2592000, 'Message');
-                            $launchUrl = $launchLinkResponse['launchLink'];
-                            $courseName = $license->name;
-
-                            try {
-                                TaskSubmission::create([
-                                    'user_id' => $user->id,
-                                    'license_id' => $license->id,
-                                    'course_id' => $course_id,
-                                    'cohort_id' => $cohort->id,
-                                    'trainer_id' => $cohort->trainer_id,
-                                    'scorm_registration_id' => $registration_id,
-                                    'scorm_course_link' => $launchUrl,
-                                ]);
-                            } catch (\Exception $e) {
-                                dd($e->getMessage()); // Dump the error message to debug
-                            }
-                        }
-                    }
-                }
-            }
 
             // Send welcome email
             Mail::to($user->email)->send(new WelcomeEmail($user, $password));
@@ -294,34 +174,8 @@ class UserController extends Controller
     {
         $idFormEdit = true;
         $roles = Role::all();
-        $categories = Category::all();
-        $courses = Course::all();
-        $cohorts = Cohort::with('course', 'corporateClient', 'trainer')->paginate(10);
-        $clients = User::role('Corporate Client')->get();
 
-        // Retrieve selected e-learning courses using DB query
-        $selectedCourses = DB::table('learner_elearning_courses')
-            ->where('learner_id', $user->id)
-            ->pluck('course_name')
-            ->toArray();
-
-
-        $coursesGeneralEnrolment = Task::where('type', 'GeneralEnrolment')->get();
-        $coursesCourseWork = Task::where('type', 'CourseWork')->get();
-        $coursesReminders = Task::where('type', 'Reminders')->get();
-        $coursesPostCompletion = Task::where('type', 'PostCompletion')->get();
-
-
-        $cohortDates = DB::table('cohorts')
-            ->select(DB::raw('YEAR(start_date_time) as year'), DB::raw('MONTH(start_date_time) as month'))
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
-
-        //$assignedTasks = $user->tasks->pluck('id')->toArray();
-
-        return view('backend.user.edit', compact('cohortDates', 'user', 'roles', 'categories', 'courses', 'cohorts', 'clients', 'idFormEdit', 'selectedCourses', 'coursesGeneralEnrolment', 'coursesCourseWork', 'coursesReminders', 'coursesPostCompletion'));
+        return view('backend.user.edit', compact( 'user', 'roles', 'idFormEdit'));
     }
 
 
@@ -356,7 +210,6 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'image' => $imageName ?? null,
-            'birth_date' => $request->birth_date,
             'address' => $request->address,
             'company' => $request->company,
             'website' => $request->website,
@@ -364,68 +217,6 @@ class UserController extends Controller
         ]);
 
         $user->syncRoles($request->user_type);
-
-        if ($request->user_type == 4) { // learner
-
-            // Sync cohorts
-            $cohortIds = $request->input('cohort_ids', []);
-            $user->cohorts()->sync($cohortIds);
-
-            if (isset($cohortIds)) {
-
-
-                //TaskSubmission::where('user_id', $user->id)->delete();
-
-                foreach ($cohortIds as $cohort_id) {
-                    $cohort = Cohort::find($cohort_id);
-
-                    foreach ($cohort->course->licenses as $license) {
-
-                        $courseId = $license->course_id;
-                        $course_id = $cohort->course->id;
-                        $learner_id = $request->name;
-                        $learnerEmail = $request->email;
-                        $learnerFirstName = $request->name;
-                        $learnerLastName = $request->last_name;
-                        $registration_id = 'reg_' . $courseId . '_' . uniqid();
-                        // Usage Example
-                        $scormApiService = new ScormApiService();
-                        $registrationId = $registration_id;
-                        $learner = [
-                            'id' => $learner_id,
-                            'email' => $learnerEmail,
-                            'firstName' => $learnerFirstName,
-                            'lastName' => $learnerLastName ?? "",
-                        ];
-
-                        // Create the registration
-                        //dd($registrationId,$learner,$courseId);
-                        $registrationResponse = $scormApiService->createRegistration($registrationId, $learner, $courseId);
-
-                        // Generate the launch link
-                        $launchLinkResponse = $scormApiService->generateLaunchLink($registrationId, 2592000, 'Message');
-                        $launchUrl = $launchLinkResponse['launchLink'];
-                        $courseName = $license->name;
-
-                        try {
-                            TaskSubmission::create([
-                                'user_id' => $user->id,
-                                'license_id' => $license->id,
-                                'course_id' => $course_id,
-                                'cohort_id' => $cohort->id,
-                                'trainer_id' => $cohort->trainer_id,
-                                'scorm_registration_id' => $registration_id,
-                                'scorm_course_link' => $launchUrl,
-                            ]);
-                        } catch (\Exception $e) {
-                            dd($e->getMessage()); // Dump the error message to debug
-                        }
-                    }
-                }
-            }
-        }
-
-
         return redirect()->route('backend.users.index')->with('success', 'User updated successfully');
     }
 
