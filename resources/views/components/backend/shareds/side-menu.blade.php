@@ -14,13 +14,6 @@
             </li>
         @endcan
 
-        @php
-            $user = auth()->user();
-        @endphp
-
-
-
-        <li class="nav-header">{{ __('System') }}</li>
 
         @can('see user')
             <li class="nav-item">
@@ -34,15 +27,27 @@
             </li>
         @endcan
 
+        @can('see service')
+            <li class="nav-item">
+                <a href="{{ route('backend.services.index') }}"
+                   class="nav-link {{ Request::is('backend/services') ? 'active' : '' }} {{ Request::is('backend/services/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        {{ __('Service') }}
+                    </p>
+                </a>
+            </li>
+        @endcan
+
         @can('see roles', 'look at permissions', 'see assign permissions')
             <li
                 class="nav-item {{ Request::is('backend/roles/*') ? 'menu-open' : '' }} {{ Request::is('backend/roles') ? 'menu-open' : '' }}
-        {{ Request::is('backend/permissions/*') ? 'menu-open' : '' }} {{ Request::is('backend/permissions') ? 'menu-open' : '' }}
-        {{ Request::is('backend/assignpermission') ? 'menu-open' : '' }} {{ Request::is('backend/assignpermission/*') ? 'menu-open' : '' }}">
+                {{ Request::is('backend/permissions/*') ? 'menu-open' : '' }} {{ Request::is('backend/permissions') ? 'menu-open' : '' }}
+                {{ Request::is('backend/assignpermission') ? 'menu-open' : '' }} {{ Request::is('backend/assignpermission/*') ? 'menu-open' : '' }}">
                 <a href="#"
                    class="nav-link {{ Request::is('backend/roles/*') ? 'active' : '' }} {{ Request::is('backend/roles') ? 'active' : '' }}
-        {{ Request::is('backend/permissions/*') ? 'active' : '' }} {{ Request::is('backend/permissions') ? 'active' : '' }}
-        {{ Request::is('backend/assignpermission') ? 'active' : '' }} {{ Request::is('backend/assignpermission/*') ? 'active' : '' }}">
+                   {{ Request::is('backend/permissions/*') ? 'active' : '' }} {{ Request::is('backend/permissions') ? 'active' : '' }}
+                   {{ Request::is('backend/assignpermission') ? 'active' : '' }} {{ Request::is('backend/assignpermission/*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-lock"></i>
                     <p>
                         {{ __('Role & Permission') }}
@@ -85,7 +90,6 @@
         @endcan
 
 
-
         <li class="nav-item">
             <a href="{{ route('clear-cache') }}"
                class="nav-link">
@@ -95,7 +99,6 @@
                 </p>
             </a>
         </li>
-
 
 
         <li class="nav-item">

@@ -22,6 +22,7 @@ use App\Http\Controllers\Backend\QualificationController;
 use App\Http\Controllers\Backend\ResetPasswordUserController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\ScormController;
+use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\TaskController;
@@ -100,11 +101,15 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth'
         Route::put('/updatefrontimage/{setting}/', [SettingController::class, 'updateFrontImage'])->name('setting.update.front.image')->middleware('permission:change settings');
     });
 
-    Route::group(['prefix' => 'settings'], function () {
-        Route::get('/index', [SettingController::class, 'index'])->name('setting.index')->middleware('permission:see settings');
-        Route::put('/updateinformation/{setting}/', [SettingController::class, 'updateInformation'])->name('setting.update.information')->middleware('permission:change settings');
-        Route::put('/updatelogo/{setting}/', [SettingController::class, 'updateLogo'])->name('setting.update.logo')->middleware('permission:change settings');
-        Route::put('/updatefrontimage/{setting}/', [SettingController::class, 'updateFrontImage'])->name('setting.update.front.image')->middleware('permission:change settings');
+
+
+    Route::group(['prefix' => 'services'], function () {
+        Route::get('/', [ServiceController::class, 'index'])->name('services.index')->middleware('permission:see service');
+        Route::get('/create', [ServiceController::class, 'create'])->name('services.create')->middleware('permission:add service');
+        Route::post('/', [ServiceController::class, 'store'])->name('services.store')->middleware('permission:add service');
+        Route::get('/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit')->middleware('permission:change service');
+        Route::put('/{service}', [ServiceController::class, 'update'])->name('services.update')->middleware('permission:change service');
+        Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('services.destroy')->middleware('permission:delete service');
     });
 
 });

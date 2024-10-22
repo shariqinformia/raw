@@ -150,9 +150,6 @@
 
 
 
-    <script>
-    </script>
-
     @stack('js')
 </body>
 
