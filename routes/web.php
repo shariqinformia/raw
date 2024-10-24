@@ -1,37 +1,16 @@
 <?php
 
-use App\Http\Controllers\Backend\ApplicationFormController;
 use App\Http\Controllers\Backend\AssignPermissionController;
-use App\Http\Controllers\Backend\AwardingBodyController;
-use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\ClientController;
-use App\Http\Controllers\Backend\CohortController;
-use App\Http\Controllers\Backend\CourseController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\DocumentUploadController;
-use App\Http\Controllers\Backend\LicenceController;
-use App\Http\Controllers\Backend\FormSubmissionController;
-use App\Http\Controllers\Backend\LearnerDashboardController;
-use App\Http\Controllers\Backend\ExamController;
-use App\Http\Controllers\Backend\MessageController;
-use App\Http\Controllers\Backend\NotificationController;
 use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\ProfileController;
-use App\Http\Controllers\Backend\ProfilePhotoController;
-use App\Http\Controllers\Backend\QualificationController;
 use App\Http\Controllers\Backend\ResetPasswordUserController;
 use App\Http\Controllers\Backend\RoleController;
-use App\Http\Controllers\Backend\ScormController;
 use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\SettingController;
-use App\Http\Controllers\Backend\SubCategoryController;
-use App\Http\Controllers\Backend\TaskController;
-use App\Http\Controllers\Backend\TrainerDashboardController;
 use App\Http\Controllers\Backend\UserController;
-use App\Http\Controllers\Backend\VenueController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 
@@ -47,6 +26,9 @@ Auth::routes([
 ]);
 
 Route::impersonate();
+
+Route::get('/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
+
 
 Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth', 'forcePasswordChange']], function () {
 

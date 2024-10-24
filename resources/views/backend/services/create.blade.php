@@ -91,47 +91,30 @@
 
 @endsection
 
-
 @push('js')
+    <script>
+        $(document).ready(function() {
+            $('#serviceName').on('input', function() {
+                let name = $(this).val().trim();
+                let slug = name.toLowerCase().replace(/\s+/g, '-'); // Convert to slug
 
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>--}}
-{{--    <script>--}}
-{{--        Dropzone.options.imageUpload = {--}}
-{{--            url: "{{ route('backend.services.store') }}",  // Your form submit URL--}}
-{{--            maxFiles: 5, // Adjust this based on your requirements--}}
-{{--            maxFilesize: 5, // In MB--}}
-{{--            acceptedFiles: 'image/*',--}}
-{{--            addRemoveLinks: true,--}}
-{{--            autoProcessQueue: false, // Prevent auto-upload--}}
-{{--            parallelUploads: 5, // Number of images to upload in parallel--}}
+                 $('#slug').val(slug); // Set the new URL in the URL field
 
-{{--            init: function () {--}}
-{{--                var myDropzone = this;--}}
+                let urlTemplate = $('#serviceUrl').data('url-template');
+                $('#serviceUrl').val(urlTemplate + slug); // Set the new URL in the URL field
+            });
+        });
 
-{{--                // Handle form submission--}}
-{{--                document.querySelector("form").addEventListener("submit", function (e) {--}}
-{{--                    e.preventDefault();--}}
-{{--                    e.stopPropagation();--}}
 
-{{--                    // Process Dropzone images--}}
-{{--                    myDropzone.processQueue();--}}
-{{--                });--}}
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
 
-{{--                // When files are added--}}
-{{--                this.on("addedfile", function (file) {--}}
-{{--                    console.log("File added:", file);--}}
-{{--                });--}}
 
-{{--                // When a file is successfully uploaded--}}
-{{--                this.on("success", function (file, response) {--}}
-{{--                    console.log("File uploaded successfully:", response);--}}
-{{--                });--}}
-
-{{--                // When all files are uploaded--}}
-{{--                this.on("queuecomplete", function () {--}}
-{{--                    console.log("All files uploaded.");--}}
-{{--                });--}}
-{{--            }--}}
-{{--        };--}}
-{{--    </script>--}}
+    </script>
 @endpush

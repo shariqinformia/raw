@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ServiceController extends Controller
 {
@@ -24,7 +25,8 @@ class ServiceController extends Controller
     public function create()
     {
         $service = new Service();
-        return view('backend.services.create', compact('service'));
+        $idFormEdit = false;
+        return view('backend.services.create', compact('service','idFormEdit'));
     }
 
     // Store a newly created service in the database.
@@ -34,6 +36,7 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'url' => 'required|url',  // Validating URL field
+            'password' => 'required',
             'default_no_of_images' => 'required|integer',
             'images' => 'required',   // Ensure at least one image is uploaded
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate each image file
@@ -43,6 +46,8 @@ class ServiceController extends Controller
         $service = new Service();
         $service->name = $validated['name'];
         $service->url = $validated['url'];
+        $service->password = $validated['password'];
+        $service->slug = $request->slug;
         $service->default_no_of_images = $validated['default_no_of_images'];
         $service->description = $request->description;
         $service->save();
@@ -84,6 +89,7 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'url' => 'required|url',
             'default_no_of_images' => 'required|integer',
+            'password' => 'required',
             'images' => 'nullable|array',  // for multiple images
             'images.*' => 'nullable|mimes:jpg,jpeg,png,bmp|max:2048' // Max size per image
         ]);
@@ -91,6 +97,8 @@ class ServiceController extends Controller
         // Update service fields
         $service->name = $request->input('name');
         $service->url = $request->input('url');
+        $service->slug = $request->input('slug');
+        $service->password = $request->input('password');
         $service->default_no_of_images = $request->input('default_no_of_images');
         $service->save();
 

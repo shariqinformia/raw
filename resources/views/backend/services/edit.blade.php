@@ -111,5 +111,27 @@
 
 @push('js')
     <script>
+        $(document).ready(function() {
+            $('#serviceName').on('input', function() {
+                let name = $(this).val().trim();
+                let slug = name.toLowerCase().replace(/\s+/g, '-'); // Convert to slug
+
+                $('#slug').val(slug); // Set the new URL in the URL field
+
+                let urlTemplate = $('#serviceUrl').data('url-template');
+                $('#serviceUrl').val(urlTemplate + slug); // Set the new URL in the URL field
+            });
+        });
+
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+
     </script>
 @endpush
