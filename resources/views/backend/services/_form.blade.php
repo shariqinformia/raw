@@ -21,9 +21,9 @@
 
             <div class="form-group col-md-6">
                 <label>{{ __('URL') }} <span class="text-red">*</span></label>
-                <input type="text" name="url" id="serviceUrl" class="form-control @error('url') is-invalid @enderror"
-                       value="{{ old('url', $service->url) }}" readonly
-                       data-url-template="http://emarket.test/service/">
+               <input type="text" name="url" id="serviceUrl" class="form-control @error('url') is-invalid @enderror"
+                    value="{{ old('url', $service->url) }}" readonly
+                     data-url-template="{{ config('app.url') }}/service/">
                 @error('url')
                 <small class="invalid-feedback" role="alert">
                     {{ $message }}

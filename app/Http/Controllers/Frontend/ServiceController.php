@@ -8,8 +8,31 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function show(Service $slug)
-    {
-        return view('frontend.view',compact('slug'));
+    public function show(Request $request, Service $slug)
+{
+    // dd($slug->images);
+  
+    if ($request->isMethod('post')) {
+        $password = $request->input('password');
+
+        
+        if ($password === $slug->password) {
+         
+            return view('frontend.view', [
+                'slug' => $slug,
+                'passwordValid' => true
+            ]);
+        } else {
+            return redirect()->route('service.show', $slug->slug)
+                ->withErrors(['password' => 'Incorrect password.']);
+        }
     }
+
+    
+    return view('frontend.view', [
+        'slug' => $slug,
+        'images' => $slug->images, 
+        'passwordValid' => false
+    ]);
+}
 }
