@@ -26,7 +26,7 @@ class ServiceController extends Controller
     {
         $service = new Service();
         $idFormEdit = false;
-        return view('backend.services.create', compact('service','idFormEdit'));
+        return view('backend.services.create', compact('service', 'idFormEdit'));
     }
 
     // Store a newly created service in the database.
@@ -36,8 +36,8 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'url' => 'required|url',  // Validating URL field
-            'password' => 'required',
-            'default_no_of_images' => 'required|integer',
+            'password' => 'required|integer',
+            //'default_no_of_images' => 'required|integer',
             'images' => 'required',   // Ensure at least one image is uploaded
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate each image file
         ]);
@@ -48,12 +48,15 @@ class ServiceController extends Controller
         $service->url = $validated['url'];
         $service->password = $validated['password'];
         $service->slug = $request->slug;
-        $service->default_no_of_images = $validated['default_no_of_images'];
+
         $service->description = $request->description;
+        $totalImages = count($request->file('images')); // Count the total images
+        $service->default_no_of_images = $totalImages / 2;
         $service->save();
 
         // Handle image uploads
         if ($request->hasFile('images')) {
+
             foreach ($request->file('images') as $file) {
                 // Generate a unique file name
                 $filename = time() . '-' . $file->getClientOriginalName();
@@ -68,17 +71,17 @@ class ServiceController extends Controller
             }
         }
 
+
         // Redirect to the index page with a success message
         return redirect()->route('backend.services.index')->with('success', 'Service created successfully!');
     }
-
 
 
     // Show the form for editing the specified service.
     public function edit(Service $service)
     {
         $idFormEdit = true;
-        return view('backend.services.edit', compact('service','idFormEdit'));
+        return view('backend.services.edit', compact('service', 'idFormEdit'));
     }
 
     // Update the specified service in the database.
@@ -87,8 +90,7 @@ class ServiceController extends Controller
         // Validate the request data
         $request->validate([
             'name' => 'required|string|max:255',
-            'url' => 'required|url',
-            'default_no_of_images' => 'required|integer',
+          //  'default_no_of_images' => 'required|integer',
             'password' => 'required',
             'images' => 'nullable|array',  // for multiple images
             'images.*' => 'nullable|mimes:jpg,jpeg,png,bmp|max:2048' // Max size per image
@@ -99,11 +101,12 @@ class ServiceController extends Controller
         $service->url = $request->input('url');
         $service->slug = $request->input('slug');
         $service->password = $request->input('password');
-        $service->default_no_of_images = $request->input('default_no_of_images');
-        $service->save();
+        //$service->default_no_of_images = $request->input('default_no_of_images');
+        $service->update($request->all());
 
         // Delete old images if new ones are provided
         if ($request->hasFile('images')) {
+
             // Delete the old images from storage and database
             foreach ($service->images as $image) {
                 // Full path to the image file in the public directory
@@ -120,25 +123,24 @@ class ServiceController extends Controller
 
             // Handle image uploads
 
-                foreach ($request->file('images') as $file) {
-                    // Generate a unique file name
-                    $filename = time() . '-' . $file->getClientOriginalName();
-                    // Save the file to a public folder
-                    $file->move(public_path('uploads/services'), $filename);
+            foreach ($request->file('images') as $file) {
+                // Generate a unique file name
+                $filename = time() . '-' . $file->getClientOriginalName();
+                // Save the file to a public folder
+                $file->move(public_path('uploads/services'), $filename);
 
-                    // Optionally, save the file name to the database
-                    // For example, if you have a related images table:
-                    $service->images()->create([
-                        'file_name' => $filename,
-                    ]);
-                }
+                // Optionally, save the file name to the database
+                // For example, if you have a related images table:
+                $service->images()->create([
+                    'file_name' => $filename,
+                ]);
+            }
         }
 
         // Redirect or return back with success message
         return redirect()->route('backend.services.index')
             ->with('success', 'Service updated successfully');
     }
-
 
 
     // Remove the specified service from the database.

@@ -30,6 +30,9 @@ Route::impersonate();
 Route::get('/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
 Route::match(['get', 'post'], '/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
 
+Route::post('leads', [App\Http\Controllers\Frontend\LeadsController::class, 'store'])->name('leads.store');
+
+
 
 Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth', 'forcePasswordChange']], function () {
 
