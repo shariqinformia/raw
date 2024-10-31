@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceImage extends Model
+class ServiceVideo extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,6 @@ class ServiceImage extends Model
 
     public function service()
     {
-        return $this->belongsTo(ImageSlide::class);
+        return $this->belongsTo(VideoSlide::class);
     }
 }

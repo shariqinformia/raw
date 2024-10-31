@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
-@section('title', 'Service')
+@section('title', 'Image Slide')
 
 @section('breadcump')
     <div class="col-sm-6">
-        <h1 class="m-0">{{ __('Service') }}</h1>
+        <h1 class="m-0">{{ __('ImageSlide') }}</h1>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('backend.dashboard.index') }}">{{ __('Home') }}</a></li>
-            <li class="breadcrumb-item">{{ __('User') }}</li>
+            <li class="breadcrumb-item">{{ __('Image Slide') }}</li>
             <li class="breadcrumb-item active">{{ __('Add') }}</li>
         </ol>
     </div>
@@ -68,9 +68,9 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('backend.services.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('backend.image_slides.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @include('backend.services._form')
+                @include('backend.image_slides._form')
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="form-group">
@@ -78,7 +78,7 @@
                                 <i class="fas fa-save mr-2"></i>
                                 {{ __('Save') }}
                             </button>
-                            <a href="{{ route('backend.services.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('backend.image_slides.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-times mr-2"></i>
                                 {{ __('Cancel') }}
                             </a>

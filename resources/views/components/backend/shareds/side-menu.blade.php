@@ -27,17 +27,29 @@
             </li>
         @endcan
 
-        @can('see service')
+        {{--@can('see service')--}}
             <li class="nav-item">
-                <a href="{{ route('backend.services.index') }}"
-                   class="nav-link {{ Request::is('backend/services') ? 'active' : '' }} {{ Request::is('backend/services/*') ? 'active' : '' }}">
+                <a href="{{ route('backend.image_slides.index') }}"
+                   class="nav-link {{ Request::is('backend/image_slides') ? 'active' : '' }} {{ Request::is('backend/image_slides/*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
-                        {{ __('Service') }}
+                        {{ __('Image Slides') }}
                     </p>
                 </a>
             </li>
-        @endcan
+       {{-- @endcan--}}
+
+        {{--@can('see service')--}}
+            <li class="nav-item">
+                <a href="{{ route('backend.video_slides.index') }}"
+                   class="nav-link {{ Request::is('backend/video_slides') ? 'active' : '' }} {{ Request::is('backend/video_slides/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        {{ __('Video Slides') }}
+                    </p>
+                </a>
+            </li>
+        {{--@endcan--}}
 
         @can('see roles', 'look at permissions', 'see assign permissions')
             <li

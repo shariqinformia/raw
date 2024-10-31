@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServiceImagesTable extends Migration
+class CreateServiceVideosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateServiceImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_images', function (Blueprint $table) {
+        Schema::create('service_videos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('image_slide_id')->constrained()->onDelete('cascade');
+            $table->foreignId('video_slide_id');
             $table->string('file_name');
             $table->timestamps();
         });

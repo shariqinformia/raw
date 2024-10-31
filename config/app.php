@@ -22,7 +22,7 @@ return [
     |
     | This value determines the "environment" your application is currently
     | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
+    | image_slides the application utilizes. Set this in your ".env" file.
     |
     */
 
@@ -125,11 +125,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
+    | Autoloaded ImageSlide Providers
     |--------------------------------------------------------------------------
     |
     | The service providers listed here will be automatically loaded on the
-    | request to your application. Feel free to add your own services to
+    | request to your application. Feel free to add your own image_slides to
     | this array to grant expanded functionality to your applications.
     |
     */
@@ -137,7 +137,7 @@ return [
     'providers' => [
 
         /*
-         * Laravel Framework Service Providers...
+         * Laravel Framework ImageSlide Providers...
          */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -164,11 +164,11 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
-         * Package Service Providers...
+         * Package ImageSlide Providers...
          */
 
         /*
-         * Application Service Providers...
+         * Application ImageSlide Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,

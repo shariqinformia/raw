@@ -6,9 +6,10 @@ use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ResetPasswordUserController;
 use App\Http\Controllers\Backend\RoleController;
-use App\Http\Controllers\Backend\ServiceController;
+use App\Http\Controllers\Backend\ImageSlidesController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Backend\VideoSlidesController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -89,13 +90,22 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth'
 
 
 
-    Route::group(['prefix' => 'services'], function () {
-        Route::get('/', [ServiceController::class, 'index'])->name('services.index')->middleware('permission:see service');
-        Route::get('/create', [ServiceController::class, 'create'])->name('services.create')->middleware('permission:add service');
-        Route::post('/', [ServiceController::class, 'store'])->name('services.store')->middleware('permission:add service');
-        Route::get('/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit')->middleware('permission:change service');
-        Route::put('/{service}', [ServiceController::class, 'update'])->name('services.update')->middleware('permission:change service');
-        Route::delete('/{service}', [ServiceController::class, 'destroy'])->name('services.destroy')->middleware('permission:delete service');
+    Route::group(['prefix' => 'image_slides'], function () {
+        Route::get('/', [ImageSlidesController::class, 'index'])->name('image_slides.index')->middleware('permission:see service');
+        Route::get('/create', [ImageSlidesController::class, 'create'])->name('image_slides.create')->middleware('permission:add service');
+        Route::post('/', [ImageSlidesController::class, 'store'])->name('image_slides.store')->middleware('permission:add service');
+        Route::get('/{image_slide}/edit', [ImageSlidesController::class, 'edit'])->name('image_slides.edit')->middleware('permission:change service');
+        Route::put('/{image_slide}', [ImageSlidesController::class, 'update'])->name('image_slides.update')->middleware('permission:change service');
+        Route::delete('/{image_slide}', [ImageSlidesController::class, 'destroy'])->name('image_slides.destroy')->middleware('permission:delete service');
+    });
+
+    Route::group(['prefix' => 'video_slides'], function () {
+        Route::get('/', [VideoSlidesController::class, 'index'])->name('video_slides.index')->middleware('permission:see service');
+        Route::get('/create', [VideoSlidesController::class, 'create'])->name('video_slides.create')->middleware('permission:add service');
+        Route::post('/', [VideoSlidesController::class, 'store'])->name('video_slides.store')->middleware('permission:add service');
+        Route::get('/{video_slide}/edit', [VideoSlidesController::class, 'edit'])->name('video_slides.edit')->middleware('permission:change service');
+        Route::put('/{video_slide}', [VideoSlidesController::class, 'update'])->name('video_slides.update')->middleware('permission:change service');
+        Route::delete('/{video_slide}', [VideoSlidesController::class, 'destroy'])->name('video_slides.destroy')->middleware('permission:delete service');
     });
 
 });

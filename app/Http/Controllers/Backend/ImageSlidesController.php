@@ -3,30 +3,26 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Service;
+use App\Models\ImageSlide;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ServiceController extends Controller
+class ImageSlidesController extends Controller
 {
-    // Display a listing of the services.
+    // Display a listing of the image_slides.
     public function index(Request $request)
     {
-        $services = $services = Service::with('images')->paginate(10);
-//        foreach($services->first()->service_images as $image){
-//            dump($image->file_name);
-//        }
-//        dd('hg');
-        return view('backend.services.index', compact('services'));
+        $services = $services = ImageSlide::with('images')->paginate(10);
+        return view('backend.image_slides.index', compact('services'));
     }
 
     // Show the form for creating a new service.
     public function create()
     {
-        $service = new Service();
+        $image_slide = new ImageSlide();
         $idFormEdit = false;
-        return view('backend.services.create', compact('service', 'idFormEdit'));
+        return view('backend.image_slides.create', compact('image_slide', 'idFormEdit'));
     }
 
     // Store a newly created service in the database.
@@ -43,16 +39,16 @@ class ServiceController extends Controller
         ]);
 
         // Store service data
-        $service = new Service();
-        $service->name = $validated['name'];
-        $service->url = $validated['url'];
-        $service->password = $validated['password'];
-        $service->slug = $request->slug;
+        $image_slide = new ImageSlide();
+        $image_slide->name = $validated['name'];
+        $image_slide->url = $validated['url'];
+        $image_slide->password = $validated['password'];
+        $image_slide->slug = $request->slug;
 
-        $service->description = $request->description;
+        $image_slide->description = $request->description;
         $totalImages = count($request->file('images')); // Count the total images
-        $service->default_no_of_images = $totalImages / 2;
-        $service->save();
+        $image_slide->default_no_of_images = $totalImages / 2;
+        $image_slide->save();
 
         // Handle image uploads
         if ($request->hasFile('images')) {
@@ -61,11 +57,11 @@ class ServiceController extends Controller
                 // Generate a unique file name
                 $filename = time() . '-' . $file->getClientOriginalName();
                 // Save the file to a public folder
-                $file->move(public_path('uploads/services'), $filename);
+                $file->move(public_path('uploads/image_slides'), $filename);
 
                 // Optionally, save the file name to the database
                 // For example, if you have a related images table:
-                $service->images()->create([
+                $image_slide->images()->create([
                     'file_name' => $filename,
                 ]);
             }
@@ -73,19 +69,19 @@ class ServiceController extends Controller
 
 
         // Redirect to the index page with a success message
-        return redirect()->route('backend.services.index')->with('success', 'Service created successfully!');
+        return redirect()->route('backend.image_slides.index')->with('success', 'ImageSlide created successfully!');
     }
 
 
     // Show the form for editing the specified service.
-    public function edit(Service $service)
+    public function edit(ImageSlide $image_slide)
     {
         $idFormEdit = true;
-        return view('backend.services.edit', compact('service', 'idFormEdit'));
+        return view('backend.image_slides.edit', compact('image_slide', 'idFormEdit'));
     }
 
     // Update the specified service in the database.
-    public function update(Request $request, Service $service)
+    public function update(Request $request, ImageSlide $image_slide)
     {
         // Validate the request data
         $request->validate([
@@ -97,20 +93,20 @@ class ServiceController extends Controller
         ]);
 
         // Update service fields
-        $service->name = $request->input('name');
-        $service->url = $request->input('url');
-        $service->slug = $request->input('slug');
-        $service->password = $request->input('password');
-        //$service->default_no_of_images = $request->input('default_no_of_images');
-        $service->update($request->all());
+        $image_slide->name = $request->input('name');
+        $image_slide->url = $request->input('url');
+        $image_slide->slug = $request->input('slug');
+        $image_slide->password = $request->input('password');
+        //$image_slide->default_no_of_images = $request->input('default_no_of_images');
+        $image_slide->update($request->all());
 
         // Delete old images if new ones are provided
         if ($request->hasFile('images')) {
 
             // Delete the old images from storage and database
-            foreach ($service->images as $image) {
+            foreach ($image_slide->images as $image) {
                 // Full path to the image file in the public directory
-                $fullPath = public_path('uploads/services/' . $image->file_name);
+                $fullPath = public_path('uploads/image_slides/' . $image->file_name);
 
                 // Check if the file exists and is a file, then delete
                 if (file_exists($fullPath) && is_file($fullPath)) {
@@ -127,27 +123,27 @@ class ServiceController extends Controller
                 // Generate a unique file name
                 $filename = time() . '-' . $file->getClientOriginalName();
                 // Save the file to a public folder
-                $file->move(public_path('uploads/services'), $filename);
+                $file->move(public_path('uploads/image_slides'), $filename);
 
                 // Optionally, save the file name to the database
                 // For example, if you have a related images table:
-                $service->images()->create([
+                $image_slide->images()->create([
                     'file_name' => $filename,
                 ]);
             }
         }
 
         // Redirect or return back with success message
-        return redirect()->route('backend.services.index')
-            ->with('success', 'Service updated successfully');
+        return redirect()->route('backend.image_slides.index')
+            ->with('success', 'ImageSlide updated successfully');
     }
 
 
     // Remove the specified service from the database.
-    public function destroy(Service $service)
+    public function destroy(ImageSlide $image_slide)
     {
-        $service->delete();
+        $image_slide->delete();
 
-        return redirect()->route('services.index')->with('success', 'Service deleted successfully!');
+        return redirect()->route('backend.image_slides.index')->with('success', 'ImageSlide deleted successfully!');
     }
 }

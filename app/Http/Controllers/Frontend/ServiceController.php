@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Service;
+use App\Models\ImageSlide;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function show(Request $request, Service $slug)
+    public function show(Request $request, ImageSlide $slug)
     {
         // dd($slug->images);
 
@@ -16,7 +16,7 @@ class ServiceController extends Controller
             $password = $request->input('password');
 
 
-            
+
 
 
             if ($password === $slug->password) {

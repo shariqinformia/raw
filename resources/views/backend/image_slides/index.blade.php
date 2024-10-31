@@ -4,12 +4,12 @@
 
 @section('breadcump')
     <div class="col-sm-6">
-        <h1 class="m-0">{{ __('Services') }}</h1>
+        <h1 class="m-0">{{ __('Image Slide') }}</h1>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('backend.dashboard.index') }}">{{ __('Home') }}</a></li>
-            <li class="breadcrumb-item active">{{ __('Service') }}</li>
+            <li class="breadcrumb-item active">{{ __('ImageSlide') }}</li>
         </ol>
     </div>
 @endsection
@@ -40,16 +40,16 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        {{ __('Data Service') }}
+                        {{ __('Data ImageSlide') }}
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="card-tools d-flex align-items-center justify-content-between">
                         @can('add user')
                             <div class="text-right mb-3">
-                                <a href="{{ route('backend.services.create') }}" class="btn btn-primary">
+                                <a href="{{ route('backend.image_slides.create') }}" class="btn btn-primary">
                                     <i class="fas fa-plus-circle mr-2"></i>
-                                    {{ __('Add Service') }}
+                                    {{ __('Add ImageSlide') }}
                                 </a>
                             </div>
                         @endcan
@@ -79,7 +79,7 @@
                                         @if ($service->images && $service->images->isNotEmpty())
                                             <div class="service-images">
                                                 @foreach($service->images as $image)
-                                                    <img src="{{ asset('uploads/services/' . $image->file_name) }}"
+                                                    <img src="{{ asset('uploads/image_slides/' . $image->file_name) }}"
                                                          alt="{{ $service->name }}" width="70" height="70" class="img-fluid mb-2">
                                                 @endforeach
                                             </div>
@@ -92,7 +92,7 @@
                                     <td>{{ $service->created_at->diffForHumans() }}</td>
                                     <td>
                                         @can('change service')
-                                            <a href="{{ route('backend.services.edit', $service) }}"
+                                            <a href="{{ route('backend.image_slides.edit', $service) }}"
                                                class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit mr-2"></i>
                                                 {{ __('Change') }}
@@ -104,7 +104,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted"><i>{{ __('No Service Found') }}</i>
+                                    <td colspan="6" class="text-center text-muted"><i>{{ __('No ImageSlide Found') }}</i>
                                     </td>
                                 </tr>
                             @endforelse

@@ -15,19 +15,19 @@ class ServiceSeeder extends Seeder
      */
     public function run()
     {
-//        $services = [];
+//        $image_slides = [];
 //
 //        for ($i = 1; $i <= 100; $i++) {
-//            $services[] = [
-//                'name' => 'Service ' . $i,
+//            $image_slides[] = [
+//                'name' => 'ImageSlide ' . $i,
 //                'url' => Str::slug('service-' . $i),
 //                'images' => null,
-//                'description' => 'This is a description for Service ' . $i,
+//                'description' => 'This is a description for ImageSlide ' . $i,
 //                'created_at' => now(),
 //                'updated_at' => now(),
 //            ];
 //        }
 //
-//        DB::table('services')->insert($services);
+//        DB::table('image_slides')->insert($image_slides);
     }
 }

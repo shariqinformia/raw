@@ -85,7 +85,7 @@
                     @if ($slug->images && $slug->images->isNotEmpty())
                         <div class="service-images">
                             @foreach($slug->images as $image)
-                                <img src="{{ asset('uploads/services/' . $image->file_name) }}"
+                                <img src="{{ asset('uploads/image_slides/' . $image->file_name) }}"
                                      alt="{{ $slug->name }}" width="250" height="250" class="img-fluid mb-2">
                             @endforeach
                         </div>
@@ -99,7 +99,7 @@
                     @if ($slug->images && $slug->images->isNotEmpty())
                         <div class="service-images">
                             @foreach($slug->images->take($slug->default_no_of_images) as $image)
-                                <img src="{{ asset('uploads/services/' . $image->file_name) }}"
+                                <img src="{{ asset('uploads/image_slides/' . $image->file_name) }}"
                                      alt="{{ $slug->name }}" width="250" height="250" class="img-fluid mb-2">
                             @endforeach
                         </div>
