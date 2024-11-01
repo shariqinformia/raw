@@ -28,8 +28,14 @@ Auth::routes([
 
 Route::impersonate();
 
-Route::get('/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
+//Route::get('/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
+
+
+
 Route::match(['get', 'post'], '/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
+
+Route::match(['get', 'post'],'/video-slides/{slug:slug}', [App\Http\Controllers\Frontend\VideoSlideController::class, 'show'])->name('video_slides.show');
+
 
 Route::post('leads', [App\Http\Controllers\Frontend\LeadsController::class, 'store'])->name('leads.store');
 

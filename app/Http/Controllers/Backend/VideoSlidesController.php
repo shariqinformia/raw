@@ -35,8 +35,8 @@ class VideoSlidesController extends Controller
             'url' => 'required|url',  // Validating URL field
             'password' => 'required|integer',
             //'default_no_of_images' => 'required|integer',
-            'images' => 'required',   // Ensure at least one image is uploaded
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate each image file
+            'videos' => 'required',   // Ensure at least one video is uploaded
+            'videos.*' => 'mimes:mp4,mov,avi,wmv|max:51200', // Validate each video file (max 50MB per video)
         ]);
 
         // Store service data
@@ -47,21 +47,22 @@ class VideoSlidesController extends Controller
         $video_slide->slug = $request->slug;
 
         $video_slide->description = $request->description;
-        $totalImages = count($request->file('images')); // Count the total images
-        $video_slide->default_no_of_videos = $totalImages / 2;
+        $totalVideos = count($request->file('videos')); // Count the total videos
+        $video_slide->default_no_of_videos = $totalVideos / 2;
         $video_slide->save();
 
-        // Handle image uploads
-        if ($request->hasFile('images')) {
-
-            foreach ($request->file('images') as $file) {
+        // Handle video uploads
+        if ($request->hasFile('videos')) {
+            foreach ($request->file('videos') as $file) {
                 // Generate a unique file name
                 $filename = time() . '-' . $file->getClientOriginalName();
-                // Save the file to a public folder
-                $file->move(public_path('uploads/image_slides'), $filename);
+                // Save the file to a public folder for videos
+                $file->move(public_path('uploads/video_slides'), $filename);
+
+
+                //dd($filename);
 
                 // Optionally, save the file name to the database
-                // For example, if you have a related images table:
                 $video_slide->videos()->create([
                     'file_name' => $filename,
                 ]);

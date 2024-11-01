@@ -88,7 +88,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $service->name }}</td>
-                                    <td>{{ $service->url }}</td>
+                                    <td> <a target="_blank" href="{{ $service->url }}" >{{$service->url}}</a></td>
                                     <td>{{ $service->created_at->diffForHumans() }}</td>
                                     <td>
                                         @can('change service')

@@ -9,7 +9,7 @@ class ServiceVideo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['image_slide_id', 'file_name'];
+    protected $guarded = [];
 
     public function service()
     {

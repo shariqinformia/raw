@@ -23,7 +23,7 @@
                 <label>{{ __('URL') }} <span class="text-red">*</span></label>
                <input type="text" name="url" id="serviceUrl" class="form-control @error('url') is-invalid @enderror"
                     value="{{ old('url', $video_slide->url) }}" readonly
-                     data-url-template="{{ config('app.url') }}/service/">
+                     data-url-template="{{ config('app.url') }}/video-slides/">
                 @error('url')
                 <small class="invalid-feedback" role="alert">
                     {{ $message }}
@@ -62,15 +62,15 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label for="images">{{ __('Images') }} <span class="text-red">*</span></label>
-                <input {{($idFormEdit == true) ? '': 'required'}}  type="file" name="images[]" multiple
-                       class="form-control @error('images.*') is-invalid @enderror">
-                @error('images')
+                <label for="videos">{{ __('Videos') }} <span class="text-red">*</span></label>
+                <input {{($idFormEdit == true) ? '': 'required'}}  type="file" name="videos[]" multiple
+                       class="form-control @error('videos.*') is-invalid @enderror">
+                @error('videos')
                 <small class="invalid-feedback" role="alert">
                     {{ $message }}
                 </small>
                 @enderror
-                @error('images.*')
+                @error('videos.*')
                 <small class="invalid-feedback" role="alert">
                     {{ $message }}
                 </small>
@@ -78,20 +78,24 @@
             </div>
         </div>
 
+
         <!-- Display current images if they exist -->
         <div class="row">
-            @if ($video_slide->images && $video_slide->images->isNotEmpty())
+            @if ($video_slide->videos && $video_slide->videos->isNotEmpty())
                 <div class="col-md-12">
-                    <label>Current Images</label>
-                    <div class="service-images">
-                        @foreach($video_slide->videos as $image)
-                            <img src="{{ asset('uploads/image_slides/' . $image->file_name) }}" alt="{{ $video_slide->name }}"
-                                 width="70" height="70" class="img-fluid mb-2">
+                    <label>Current Videos</label>
+                    <div class="service-videos">
+                        @foreach($video_slide->videos as $video)
+                            <video width="320" height="240" controls class="mb-2">
+                                <source src="{{ asset('uploads/video_slides/' . $video->file_name) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         @endforeach
                     </div>
                 </div>
             @endif
         </div>
+
 
         <div class="row">
             <div class="form-group col-md-12">
