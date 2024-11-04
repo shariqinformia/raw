@@ -97,17 +97,17 @@ class VideoSlidesController extends Controller
         // Update service fields
         $video_slide->name = $request->input('name');
         $video_slide->url = $request->input('url');
-        $video_slide->slug = $request->input('slug');
         $video_slide->password = $request->input('password');
-        $video_slide->update($request->all());
+        $video_slide->slug = $request->input('slug');
+        $video_slide->save();
 
         // Delete old images if new ones are provided
-        if ($request->hasFile('images')) {
+        if ($request->hasFile('videos')) {
 
             // Delete the old images from storage and database
             foreach ($video_slide->videos as $image) {
                 // Full path to the image file in the public directory
-                $fullPath = public_path('uploads/image_slides/' . $image->file_name);
+                $fullPath = public_path('uploads/video_slides/' . $image->file_name);
 
                 // Check if the file exists and is a file, then delete
                 if (file_exists($fullPath) && is_file($fullPath)) {
@@ -120,15 +120,15 @@ class VideoSlidesController extends Controller
 
             // Handle image uploads
 
-            foreach ($request->file('images') as $file) {
+            foreach ($request->file('videos') as $file) {
                 // Generate a unique file name
                 $filename = time() . '-' . $file->getClientOriginalName();
                 // Save the file to a public folder
-                $file->move(public_path('uploads/image_slides'), $filename);
+                $file->move(public_path('uploads/video_slides'), $filename);
 
                 // Optionally, save the file name to the database
                 // For example, if you have a related images table:
-                $video_slide->images()->create([
+                $video_slide->videos()->create([
                     'file_name' => $filename,
                 ]);
             }
