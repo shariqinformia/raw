@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\AssignPermissionController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\PdfController;
 use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\ResetPasswordUserController;
@@ -35,6 +36,8 @@ Route::impersonate();
 Route::match(['get', 'post'], '/service/{slug:slug}', [App\Http\Controllers\Frontend\ServiceController::class, 'show'])->name('service.show');
 
 Route::match(['get', 'post'],'/video-slides/{slug:slug}', [App\Http\Controllers\Frontend\VideoSlideController::class, 'show'])->name('video_slides.show');
+
+Route::match(['get', 'post'],'/pdf/{slug:pdf}', [App\Http\Controllers\Frontend\PdfController::class, 'show'])->name('pdf.show');
 
 
 Route::post('leads', [App\Http\Controllers\Frontend\LeadsController::class, 'store'])->name('leads.store');
@@ -112,6 +115,15 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth'
         Route::get('/{video_slide}/edit', [VideoSlidesController::class, 'edit'])->name('video_slides.edit')->middleware('permission:change service');
         Route::put('/{video_slide}', [VideoSlidesController::class, 'update'])->name('video_slides.update')->middleware('permission:change service');
         Route::delete('/{video_slide}', [VideoSlidesController::class, 'destroy'])->name('video_slides.destroy')->middleware('permission:delete service');
+    });
+
+    Route::group(['prefix' => 'pdf'], function () {
+        Route::get('/', [PdfController::class, 'index'])->name('pdf.index')->middleware('permission:see service');
+        Route::get('/create', [PdfController::class, 'create'])->name('pdf.create')->middleware('permission:add service');
+        Route::post('/', [PdfController::class, 'store'])->name('pdf.store')->middleware('permission:add service');
+        Route::get('/{pdf}/edit', [PdfController::class, 'edit'])->name('pdf.edit')->middleware('permission:change service');
+        Route::put('/{pdf}', [PdfController::class, 'update'])->name('pdf.update')->middleware('permission:change service');
+        Route::delete('/{pdf}', [PdfController::class, 'destroy'])->name('pdf.destroy')->middleware('permission:delete service');
     });
 
 });

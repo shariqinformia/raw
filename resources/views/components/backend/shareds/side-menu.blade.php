@@ -51,6 +51,19 @@
             </li>
         {{--@endcan--}}
 
+
+            {{--@can('see pdf')--}}
+            <li class="nav-item">
+                <a href="{{ route('backend.pdf.index') }}"
+                   class="nav-link {{ Request::is('backend/pdf') ? 'active' : '' }} {{ Request::is('backend/pdf/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        {{ __('Pdf') }}
+                    </p>
+                </a>
+            </li>
+            {{--@endcan--}}
+
         @can('see roles', 'look at permissions', 'see assign permissions')
             <li
                 class="nav-item {{ Request::is('backend/roles/*') ? 'menu-open' : '' }} {{ Request::is('backend/roles') ? 'menu-open' : '' }}
