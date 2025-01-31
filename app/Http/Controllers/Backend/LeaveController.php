@@ -16,11 +16,9 @@ class LeaveController extends Controller
         $user = auth()->user();
         if( $user->hasRole('Super Admin')  ) {
             $leaves = Leave::with('user')->get();
-            return view('backend.leaves.index', compact('leaves'));
+            return view('backend.leaves.admin_leaves', compact('leaves'));
         } elseif( $user->hasRole('Student')  ) {
-
-
-            $leaves = Leave::where('user_id',$user->id)->first();
+            $leaves = Leave::where('user_id',$user->id)->get();
             return view('backend.leaves.index', compact('leaves'));
         }
     }
@@ -52,6 +50,7 @@ class LeaveController extends Controller
             'type_of_leave' => $request->type_of_leave,
             'leave_date' => $request->leave_date,
             'reason' => $request->reason,
+            'status' => 'In Progress',
         ]);
 
         // Redirect with success message
@@ -103,5 +102,29 @@ class LeaveController extends Controller
     {
         $leave->delete();
         return redirect()->route('backend.leaves.index')->with('success', 'Leave deleted successfully');
+    }
+
+    public function approve($id)
+    {
+        $profilePhoto = Leave::findOrFail($id);
+        $user = $profilePhoto->user;
+        $profilePhoto->status = 'Approved';
+        $profilePhoto->comments = '';
+        $profilePhoto->save();
+        return redirect()->back()->with('success', 'Leave approved successfully.');
+    }
+
+    public function reject(Request $request,$id)
+    {
+        $profilePhoto = Leave::findOrFail($id);
+        $user = $profilePhoto->user;
+        $profilePhoto->status = 'Rejected';
+        $profilePhoto->comments = $request->comments;
+        $profilePhoto->save();
+
+        // Send notification to learner
+        $task_url = route('backend.leaves.index');
+        $message = 'Leave has been rejected';
+        return redirect()->back()->with('error', 'Leave rejected.');
     }
 }

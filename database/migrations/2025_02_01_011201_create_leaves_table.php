@@ -19,6 +19,10 @@ class CreateLeavesTable extends Migration
             $table->string('type_of_leave');
             $table->date('leave_date');
             $table->text('reason');
+
+            $table->enum('status', ['In Progress', 'Not Submitted', 'Approved', 'Rejected'])->default('Not Submitted');
+            $table->text('comments')->nullable(); // Add comments column
+
             $table->timestamps();
         });
     }

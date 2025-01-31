@@ -84,7 +84,7 @@
             </div>
 
             <div class="form-group col-md-6">
-                <label>{{ __('Password, update only if you wish to change the password') }}</label>
+                <label>{{ __('Password') }}</label>
                 <input type="password" name="password" class="form-control">
             </div>
         </div>

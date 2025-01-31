@@ -35,14 +35,12 @@
                 </div>
                 <div class="card-body">
                     @can('add leave')
-
                         <div class="text-right mb-3">
                             <a href="{{ route('backend.leaves.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus-circle mr-2"></i>
                                 {{ __('Add leave') }}
                             </a>
                         </div>
-
                     @endif
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -50,6 +48,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>{{ __('Type of leave') }}</th>
+                                <th>{{ __('Student') }}</th>
                                 <th>{{ __('Date') }}</th>
                                 <th>{{ __('Status') }}</th>
                                 <th>{{ __('Reason') }}</th>
@@ -62,6 +61,7 @@
                             @forelse ($leaves as $leave)
                                 <tr>
                                     <td>{{ $leave->id }}</td>
+                                    <td>{{ $leave->user->name }}</td>
                                     <td>{{ strtoupper(str_replace("_"," ",$leave->type_of_leave)) }}</td>
                                     <td>{{ \Carbon\Carbon::parse($leave->leave_date)->format('d M, Y') }}</td>
                                     <td>
@@ -85,17 +85,17 @@
                                     <td>{{ $leave->reason }}</td>
                                     <td>{{ $leave->comments }}</td>
                                     <td>{{ $leave->created_at->diffForHumans() }}</td>
-                                    <td>
-                                        @if ($leave->name == "Super Admin")
-                                            <i class="text-muted">{{ __('Default leave') }}</i>
+                                    <td colspan="2">
+                                        @if (isset($leave) && $leave->status == 'In Progress')
+                                            <a href="{{ route('backend.leaves.approve', $leave->id) }}"
+                                               class="btn btn-success btn-sm">Approve</a>
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#rejectModal"
+                                                    data-profilephotoid="{{ $leave->id }}">
+                                                Reject
+                                            </button>
                                         @else
-                                            @can('change leaves')
-                                                <a href="{{ route('backend.leaves.edit', $leave->id) }}"
-                                                   class="btn btn-sm btn-warning">
-                                                    <i class="fas fa-edit mr-2"></i>
-                                                    {{ __('Change') }}
-                                                </a>
-                                            @endcan
+                                            -
                                         @endif
                                     </td>
                                 </tr>
@@ -113,4 +113,49 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Reject Modal -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Reject Leave</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="rejectForm" method="POST" action="{{ route('backend.leaves.reject', ['id' => 0]) }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="comments">Comments</label>
+                            <textarea class="form-control" id="comments" name="comments" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.4.1/lity.min.js"
+            integrity="sha512-UU0D/t+4/SgJpOeBYkY+lG16MaNF8aqmermRIz8dlmQhOlBnw6iQrnt4Ijty513WB3w+q4JO75IX03lDj6qQNA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $('#rejectModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var profilePhotoId = button.data('profilephotoid'); // Extract info from data-* attributes
+
+            var form = $('#rejectForm');
+            var action = form.attr('action').replace('/0', '/' + profilePhotoId);
+            form.attr('action', action);
+        });
+    </script>
+@endpush

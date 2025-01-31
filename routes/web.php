@@ -147,6 +147,9 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth'
         Route::get('/{leave}/edit', [LeaveController::class, 'edit'])->name('leaves.edit')->middleware('permission:change leave');
         Route::put('/{leave}', [LeaveController::class, 'update'])->name('leaves.update')->middleware('permission:change leave');
         Route::delete('/{leave}', [LeaveController::class, 'destroy'])->name('leaves.destroy')->middleware('permission:delete leave');
+
+        Route::get('/approve/{id}', [LeaveController::class, 'approve'])->name('leaves.approve');
+        Route::post('/reject/{id}', [LeaveController::class, 'reject'])->name('leaves.reject');
     });
 
 

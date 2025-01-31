@@ -60,9 +60,9 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    public function trainerCohorts()
+    public function leaves()
     {
-        return $this->hasMany(Cohort::class, 'trainer_id');
+        return $this->hasMany(Leave::class);
     }
 
 
