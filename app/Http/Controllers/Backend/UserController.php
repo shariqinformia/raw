@@ -68,20 +68,6 @@ class UserController extends Controller
         return view('backend.user.index', compact('users', 'sort', 'search', 'roles', 'role'));
     }
 
-    // public function search(Request $request)
-    // {
-    //     $text = $request->input('text');
-
-    //     if (empty($text)) {
-    //         $users = User::all();
-    //     } else {
-    //         $users = User::where('name', 'like', '%' . $text . '%')->get();
-    //     }
-
-    //     return view('backend.user.search_rows', compact('users'));
-    // }
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -108,62 +94,28 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        DB::beginTransaction();
         try {
+            // Validate input data
+            $validatedData = $request->validated();
+            $validatedData['password'] = Hash::make($request->password);
 
-            $validatedData = $request->validate([
-                'user_type' => 'required',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'name' => 'required|string|max:255',
-                'middle_name' => 'nullable|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'telephone' => 'required',
-                'address' => 'nullable|string|max:255',
-                'company' => 'nullable|string|max:255',
-                'website' => 'nullable|string|max:255',
-            ]);
-
-            $imageName = null;
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                // Correct reference to 'image' field
-                $uploadedFile = $request->file('image');
-
-                // Create a unique file name
-                $fileName = time() . '_' . $uploadedFile->getClientOriginalName();
-
-                // Store the file in the 'public' disk under 'profile_images' directory
-                $filePath = $uploadedFile->storeAs('profile_images', $fileName, 'public');
-
-                // Save the full path to store in the database
-                $imageName = 'storage/' . $filePath;
-            }
-
-            unset($validatedData['user_type']);
-            unset($validatedData['cohort_ids']);
-            // Generate and assign password
-            $password = Str::random(10);
-            $validatedData['image'] = $imageName;
-            $validatedData['password'] = Hash::make($password);
-
-            if ($request->corporate_client_id) {
-                $validatedData['client_id'] = $request->corporate_client_id;
-            }
-
+            // Create the user
             $user = User::create($validatedData);
-            $user->assignRole($request->user_type);
+
+            // Optionally, assign a role
+            $user->assignRole(2);  // Assuming role ID for user is 2
 
             // Send welcome email
-            Mail::to($user->email)->send(new WelcomeEmail($user, $password));
-            DB::commit(); // Commit the transaction if everything is successful
-            return redirect()->route('backend.users.index')->with('success', 'User added successfully');
+            Mail::to($user->email)->send(new WelcomeEmail($user,$request->password));
+
+            return redirect()->route('backend.users.index')->with('success', 'User created successfully.');
         } catch (\Exception $e) {
-            DB::rollBack(); // Rollback the transaction on error
-            // Log the error for debugging purposes
             Log::error('User creation failed: ' . $e->getMessage());
-            return redirect()->route('backend.users.index')->with('error', 'Failed to create user. Please try again. ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create user. Please try again.');
         }
     }
+
+
 
     public function show(User $user)
     {
@@ -186,39 +138,36 @@ class UserController extends Controller
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
-        $imageName = $user->image; // Set the default to the current image in the database
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Correct reference to 'image' field
-            $uploadedFile = $request->file('image');
 
-            // Create a unique file name
-            $fileName = time() . '_' . $uploadedFile->getClientOriginalName();
-
-            // Store the file in the 'public' disk under 'profile_images' directory
-            $filePath = $uploadedFile->storeAs('profile_images', $fileName, 'public');
-
-            // Save the full path to store in the database
-            $imageName = 'storage/' . $filePath;
-        }
-
-        $user->update([
-            'name' => $request->name,
-            'client_id' => isset($request->corporate_client_id) ? $request->corporate_client_id : null,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'image' => $imageName ?? null,
-            'address' => $request->address,
-            'company' => $request->company,
-            'website' => $request->website,
-            'telephone' => $request->telephone
+        // Validation
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id, // Excluding current user ID
+            'telephone' => 'required|string|max:20',
+            'gender' => 'required|in:male,female', // Make sure gender is either male or female
+            'address' => 'required|string|max:255',
+            'password' => 'nullable|string|min:6', // Optional password change
         ]);
 
-        $user->syncRoles($request->user_type);
+
+        // Update the user record with the validated data
+        $user->update([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'gender' => $request->gender, // Added gender field
+            'address' => $request->address,
+            'telephone' => $request->telephone,
+            'password' => $request->password ? Hash::make($request->password) : $user->password, // Only update password if provided
+        ]);
+
+         // Redirect back with a success message
         return redirect()->route('backend.users.index')->with('success', 'User updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.

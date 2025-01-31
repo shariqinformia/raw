@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\CohortController;
 use App\Http\Controllers\Backend\CourseController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DocumentUploadController;
+use App\Http\Controllers\Backend\LeaveController;
 use App\Http\Controllers\Backend\LicenceController;
 use App\Http\Controllers\Backend\FormSubmissionController;
 use App\Http\Controllers\Backend\LearnerDashboardController;
@@ -138,14 +139,16 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'middleware' => ['auth'
         Route::put('/updatefrontimage/{setting}/', [SettingController::class, 'updateFrontImage'])->name('setting.update.front.image')->middleware('permission:change settings');
     });
 
-    Route::group(['prefix' => 'categories'], function () {
-        Route::get('/index', [CategoryController::class, 'index'])->name('categories.index')->middleware('permission:see category');
-        Route::get('/create', [CategoryController::class, 'create'])->name('categories.create')->middleware('permission:add category');
-        Route::post('/store', [CategoryController::class, 'store'])->name('categories.store')->middleware('permission:add category');
-        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit')->middleware('permission:change category');
-        Route::put('/{category}', [CategoryController::class, 'update'])->name('categories.update')->middleware('permission:change category');
-        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('permission:delete category');
+
+    Route::group(['prefix' => 'leaves'], function () {
+        Route::get('/index', [LeaveController::class, 'index'])->name('leaves.index')->middleware('permission:see leave');
+        Route::get('/create', [LeaveController::class, 'create'])->name('leaves.create')->middleware('permission:add leave');
+        Route::post('/store', [LeaveController::class, 'store'])->name('leaves.store')->middleware('permission:add leave');
+        Route::get('/{leave}/edit', [LeaveController::class, 'edit'])->name('leaves.edit')->middleware('permission:change leave');
+        Route::put('/{leave}', [LeaveController::class, 'update'])->name('leaves.update')->middleware('permission:change leave');
+        Route::delete('/{leave}', [LeaveController::class, 'destroy'])->name('leaves.destroy')->middleware('permission:delete leave');
     });
+
 
     Route::group(['prefix' => 'qualifications'], function () {
         Route::get('/index', [QualificationController::class, 'index'])->name('qualifications.index')->middleware('permission:see qualification');

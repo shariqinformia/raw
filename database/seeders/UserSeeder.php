@@ -20,16 +20,14 @@ class UserSeeder extends Seeder
      * @return void
      */
     public function run()
-    {$saveImage = null;
+    {
         $user = User::create([
             'name' => 'Super Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
-            'phone_number' => '1111 111 1111',
             'telephone' => '1111 111 1111',
             'address' => '',
             'password_check' => 1,
-            'image' => $saveImage
         ]);
         $role = Role::findById(1);
         $user->assignRole($role->name);

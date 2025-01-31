@@ -24,9 +24,23 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:users,email'
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'gender' => 'required|in:male,female',
+            'address' => 'required|string|max:255',
+            'telephone' => 'nullable|string|max:20',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'This email is already registered.',
+            'gender.required' => 'Please select a gender.',
+            'birth_date.before' => 'Birth date must be in the past.',
+        ];
+    }
+
 }

@@ -6,133 +6,89 @@
                 {{ __('Return') }}
             </a>
         </div>
-        <div
-            class="alert alert-info"><?php echo e(__('User will receive an email containing a randomly generated password')); ?></div>
+
+
 
         <div class="row">
 
-            <div class="form-group col-md-8">
-                <label for="user_type">{{ __('User Type') }} <span
-                        class="text-red">*</span></label>
-                <select name="user_type" id="user_type" class="form-control" required>
-                    <option value="" disabled selected>Select User Type</option>
-                    @foreach ($roles as $role)
-                        <option
-                            value="{{ $role->id }}" {{ (in_array($role->id, $user->roles->pluck('id')->toArray())) ? 'selected' : '' }}>
-                            {{ $role->name }}
-                        </option>
-                    @endforeach
-                </select>
-                <br>
-                <div id="corporate_message" class="alert alert-info" style="display: none;">
-                    <?php echo e(__('Please note, this user will have access to view and monitor all delegates assigned to this Corporate Client')); ?>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="user_type">{{ __('Profile Image') }} <span
-                        class="text-red">*</span></label>
-                <div class='file-input'>
-                    <input type='file' name="image">
-                    <span class='button'>Choose</span>
-                    <span class='label' data-js-label>No file selected</label>
-                </div>
-            </div>
-
-        </div>
-        <div class="row">
-
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label>{{ __('First Name') }} <span
                         class="text-red">*</span></label>
-                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                <input type="text" name="name" class="form-control "
                        value="{{ old('name', $user->name) }}">
-                @error('name')
-                <small class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </small>
-                @enderror
+
             </div>
-            <div class="form-group col-md-4">
-                <label>{{ __('Middle Name(s)') }}</label>
-                <input type="text" name="middle_name" class="form-control"
-                       value="{{ old('middle_name', $user->middle_name) }}">
-            </div>
-            <div class="form-group col-md-4">
+
+            <div class="form-group col-md-6">
                 <label>{{ __('Last Name') }} <span
                         class="text-red">*</span></label>
                 <input type="text" name="last_name"
-                       class="form-control @error('last_name') is-invalid @enderror"
+                       class="form-control "
                        value="{{ old('last_name', $user->last_name) }}">
-                @error('last_name')
-                <small class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </small>
-                @enderror
+
             </div>
 
 
         </div>
 
-        <div class="row">
-            <div class="form-group col-md-4">
-                <label>{{ __('Email Address') }} <span
-                        class="text-red">*</span></label>
-                <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"
-                       value="{{ old('email', $user->email) }}">
-                @error('email')
-                <small class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </small>
-                @enderror
-            </div>
-            <div class="form-group col-md-4">
-                <label>{{ __('D.O.B') }}</label>
-
-                <input type="date" name="birth_date" class="form-control date"
-                       value="{{ old('birth_date', $user->birth_date) }}" placeholder="day–month–year"/>
-
-            </div>
-            <div class="form-group col-md-4">
-                <label>{{ __('Full Address') }}</label>
-                <input type="text" name="address" class="form-control"
-                       value="{{ old('address', $user->address) }}">
-            </div>
-        </div>
-
 
         <div class="row">
-            <div class="form-group col-md-4">
-                <label>{{ __('Company Name') }}</label>
-                <input type="text" name="company" class="form-control @error('company') is-invalid @enderror"
-                       value="{{ old('company', $user->company) }}">
-                @error('company')
-                <small class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </small>
-                @enderror
+
+            <div class="form-group col-md-6">
+                <label>{{ __('Gender') }} <span class="text-red">*</span></label>
+                <select name="gender" class="form-control">
+                    <option value="">Select Gender</option>
+                    <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>Female</option>
+                </select>
             </div>
-            <div class="form-group col-md-4">
-                <label>{{ __('Website') }}</label>
-                <input type="text" name="website" class="form-control"
-                       value="{{ old('website', $user->website) }}">
-            </div>
-            <div class="form-group col-md-4">
+
+            <div class="form-group col-md-6">
                 <label>{{ __('Telephone') }} <span
                         class="text-red">*</span></label>
 
 
-                <input type="text" name="telephone" id="phone"
-                       class="form-control @error('telephone') is-invalid @enderror"
+                <input type="text" name="telephone"
+                       class="form-control"
                        value="{{ old('telephone', $user->telephone) }}">
-                @error('telephone')
-                <small class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </small>
-                @enderror
+
 
 
             </div>
+
+
+
         </div>
+
+
+        <div class="row">
+
+
+            <div class="form-group col-md-12">
+                <label>{{ __('Full Address') }}<span
+                        class="text-red">*</span></label>
+                <input type="text" name="address" class="form-control"
+                       value="{{ old('address', $user->address) }}">
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>{{ __('Email Address') }} <span
+                        class="text-red">*</span></label>
+                <input type="text" name="email" class="form-control"
+                       value="{{ old('email', $user->email) }}">
+
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>{{ __('Password, update only if you wish to change the password') }}</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+        </div>
+
 
     </div>
 </div>

@@ -125,12 +125,54 @@ class PermissionSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
 
+            /** Leave */
+            [
+                'name' => 'see leave',
+                'guard_name' => 'web',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'add leave',
+                'guard_name' => 'web',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'change leave',
+                'guard_name' => 'web',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'delete leave',
+                'guard_name' => 'web',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+
 
         ]);
 
         DB::table('role_has_permissions')->insert([
             [
                 'permission_id' => 1,
+                'role_id' => 2
+            ],
+            [
+                'permission_id' => 18,
+                'role_id' => 2
+            ],
+            [
+                'permission_id' => 19,
+                'role_id' => 2
+            ],
+            [
+                'permission_id' => 20,
+                'role_id' => 2
+            ],
+            [
+                'permission_id' => 21,
                 'role_id' => 2
             ],
 

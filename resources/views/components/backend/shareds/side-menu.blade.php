@@ -85,6 +85,17 @@
         @endcan
 
 
+            @can('see leave')
+                <li class="nav-item">
+                    <a href="{{ route('backend.leaves.index') }}"
+                       class="nav-link
+                    {{ Request::is('backend/leaves') ? 'active' : '' }} {{ Request::is('backend/leaves/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-check"></i>
+                        <p>{{ __('Leaves') }}</p>
+                    </a>
+                </li>
+            @endcan
+
 
         <li class="nav-item">
             <a href="{{ route('clear-cache') }}"

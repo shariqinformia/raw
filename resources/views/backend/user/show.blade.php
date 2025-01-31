@@ -75,10 +75,6 @@
                                     <th>{{ __('Address') }}</th>
                                     <td>{{ $user->address }}</td>
                                 </tr>
-                                <tr>
-                                    <th>{{ __('Date of birth') }}</th>
-                                    <td>{{ $user->birth_date }}</td>
-                                </tr>
                             </table>
                         </div>
                     </div>

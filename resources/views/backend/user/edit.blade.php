@@ -29,12 +29,30 @@
 
     <div class="row">
         <div class="col-md-12">
+
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <form action="{{ route('backend.users.update', $user) }}" enctype="multipart/form-data" method="POST" id="{{($idFormEdit == true) ? 'editFormHandler': ''}}">
                 @csrf
                 @method('PUT')
                 @include('backend.user._form')
                 <div class="card mb-4">
                     <div class="card-body">
+
+
+
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save mr-2"></i>
