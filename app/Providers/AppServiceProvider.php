@@ -9,7 +9,7 @@ use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register any application image_slides.
      *
      * @return void
      */
@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap any application image_slides.
      *
      * @return void
      */
