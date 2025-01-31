@@ -20,7 +20,6 @@ class LeaveController extends Controller
         } elseif( $user->hasRole('Student')  ) {
 
 
-
             $leaves = Leave::where('user_id',$user->id)->first();
             return view('backend.leaves.index', compact('leaves'));
         }
